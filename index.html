@@ -13,7 +13,7 @@ const importer = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
   fields: [
       {key: "firstname", label: "First name"},
 	  {key: "lastname", label: "Name"},
-	  {key: "email", label: "Email", validators:[{validate:'regex_matches',regex:JSON.stringify("^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"),error: 'Invalid Email Format or Empty Field'}]},
+	  {key: "email", label: "Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "city", label: "City"},
 	  {key: "country", label: "Country"},
 	  {key: "sessiontitle", label: "SessionTitle"},
