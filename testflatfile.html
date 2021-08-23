@@ -1,0 +1,30 @@
+<button onclick="importer.requestDataFromUser().then(function(results) { 
+    // do something with the results
+    importer.displaySuccess('Thanks for uploading your data!')
+})">Start Import</button>
+
+<script src="https://unpkg.com/@flatfile/adapter/build/dist/index.min.js"></script>
+
+<script>
+const importer = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
+  type: "imports",
+  fields: [
+      {key: "firstname", label: "First name"},
+	  {key: "lastname", label: "Name"},
+	  {key: "email", label: "Email"},
+	  {key: "city", label: "City"},
+	  {key: "country", label: "Country"},
+	  {key: "sessiontitle", label: "SessionTitle"},
+	  {key: "sessiondate", label: "SessionDate"},
+	  {key: "sessionfrom", label: "SessionFrom"},
+	  {key: "sessionto", label: "SessionTo"},
+	  {key: "sessiontype", label: "SessionType"},
+	  {key: "room", label: "Room"},
+	  {key: "sessionid", label: "SessionID"},
+    ],
+  managed: true,
+  devMode:true
+});
+
+importer.setCustomer({userId: "12345"});
+</script>
