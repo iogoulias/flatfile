@@ -1,7 +1,7 @@
   <label for="fname">Client:</label>
   <input type="text" id="fname" name="fname"><br><br>
 <button onclick="importer.requestDataFromUser().then(function(results) { 
-    console.log(results)
+    console.log(results.data)
     importer.displaySuccess('Thanks for uploading your data!')
 })">Start Import</button>
 
