@@ -32,4 +32,20 @@ if (client==null || client=="") {
 client=12345;
 }
 importer.setCustomer({userId: client});
+
+importer.registerRecordHook(record => {
+  let out = {}
+  if (record.sessiondate && record.sessiondate!="" && record.sessiondate!=null && record.sessiondate!=new Date(record.sessiondate).toLocaleDateString('fr') ) {
+    out.sessiondate = {
+      value: new Date(record.sessiondate).toLocaleDateString('fr'),
+      info: [
+        {
+          message: 'Fixed Date Format',
+          level: 'info'
+        }
+      ]
+    }
+  }
+  return out
+})
 </script>
