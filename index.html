@@ -1,5 +1,7 @@
+  <label for="fname">Client:</label>
+  <input type="text" id="fname" name="fname"><br><br>
 <button onclick="importer.requestDataFromUser().then(function(results) { 
-    // do something with the results
+    console.log(results)
     importer.displaySuccess('Thanks for uploading your data!')
 })">Start Import</button>
 
@@ -11,13 +13,13 @@ const importer = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
   fields: [
       {key: "firstname", label: "First name"},
 	  {key: "lastname", label: "Name"},
-	  {key: "email", label: "Email"},
+	  {key: "email", label: "Email", validators:[{validate:'regex_matches',regex:"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "city", label: "City"},
 	  {key: "country", label: "Country"},
 	  {key: "sessiontitle", label: "SessionTitle"},
-	  {key: "sessiondate", label: "SessionDate"},
-	  {key: "sessionfrom", label: "SessionFrom"},
-	  {key: "sessionto", label: "SessionTo"},
+	  {key: "sessiondate", label: "SessionDate",,validators:[{validate:'regex_matches',regex:"^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[012])[/](19|20)\d\d$",error: 'Invalid Date Format or Empty Field'}]},
+	  {key: "sessionfrom", label: "SessionFrom",validators:[{validate:'regex_matches',regex:"^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",error: 'Invalid Time Format or Empty Field'}]},
+	  {key: "sessionto", label: "SessionTo", validators:[{validate:'regex_matches',regex:"^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",error: 'Invalid Time Format or Empty Field'}]},
 	  {key: "sessiontype", label: "SessionType"},
 	  {key: "room", label: "Room"},
 	  {key: "sessionid", label: "SessionID"},
@@ -25,6 +27,9 @@ const importer = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
   managed: true,
   devMode:true
 });
-
-importer.setCustomer({userId: "12345"});
+var client=document.getElementById('fname').value;
+if (client==null || client=="") {
+client=12345;
+}
+importer.setCustomer({userId: client});
 </script>
