@@ -4,7 +4,7 @@
     var data=(results.data);
 	var speakers={};
 	var sessions={};
-	results.data=results.data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']} return v})
+	data=data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']} return v})
 	for (var i=0;i<data.length;i++) {
 	if (!speakers.hasOwnProperty(data[i]['email'])) {
 	speakers[data[i]['email']]={'Name':data[i]['firstname']+' '+data[i]['lastname'],
