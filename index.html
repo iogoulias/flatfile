@@ -164,6 +164,17 @@ importer.registerRecordHook(record => {
       ]  
   }
   }
+  if (record.sessionid==null || record.sessionid=="") {
+ out.sessionid = {
+      value: record.sessiontitle,
+      info: [
+        {
+          message: 'Fixed Session Id Format',
+          level: 'info'
+        }
+      ]  
+  }    
+  }
   if (record.role!=null && record.role!="") {
   if (((record.role).toLowerCase()).indexOf("speaker")>-1) {
   out.role = {
