@@ -135,8 +135,11 @@ client=client+'_'+(new Date()).toISOString();
 		tempobj['country']='';
 		tempobj['email']=String(data[i]['chair'+k+'_email']).toLowerCase();
 		data2.push(tempobj)
+		console.log(tempobj)
 		console.log('k: '+k);
 		console.log('chair_k_email: '+String(data[i]['chair'+k+'_email']).toLowerCase())
+		console.log('tempobj email: '+tempobj['email'])
+		console.log('data2 last email: '+data2[data2.length-1]['email'])
 		console.log(data2.length)
 		if (!addedchairs.hasOwnProperty(data[i]['sessionid'])) { 
 		addedchairs[data[i]['sessionid']]={};
