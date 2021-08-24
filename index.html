@@ -1,7 +1,18 @@
   <label for="fname">Client:</label>
   <input type="text" id="fname" name="fname"><br><br>
 <button onclick="importer.requestDataFromUser().then(function(results) { 
-    console.log(results.data)
+    var data=(results.data);
+	var speakers={};
+	for (var i=0;i<data.length;i++) {
+	if (!speakers.hasOwnProperty(data[i]['email'])) {
+	speakers[data[i]['email']]={'Name':data[i]['firstname']+' '+data[i]['lastname'],
+	'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country'],'Speakers':[data[i]['sessionid']]
+	} else {
+	(speakers[data[i]['email']]['Speakers']).push(data[i]['sessionid'])
+	}
+	}
+	}
+	console.log(speakers)
     importer.displaySuccess('Thanks for uploading your data!')
 })">Start Import</button>
 
