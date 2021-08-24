@@ -164,7 +164,7 @@ importer.registerRecordHook(record => {
       ]  
   }
   }
-  if (record.sessionid==null || record.sessionid=="") {
+  if (record.sessionid==null || record.sessionid=="" || !record.hasOwnProperty("sessionid")) {
  out.sessionid = {
       value: record.sessiontitle,
       info: [
