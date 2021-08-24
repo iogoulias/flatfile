@@ -52,15 +52,21 @@
 	sessions=sessions.map(function(value){value['Moderators']=(value['Moderators']).join(','); return value});
 	speakers=speakers.map(function(value){value['Sessions']=(value['Sessions']).join(','); return value});
 var payload={'records':[]};
+var payload2={'records':[]};
 	for (var i=0;i<sessions.length;i++) {
 payload.records.push({'fields':sessions[i]})
 }
+	for (var i=0;i<speakers.length;i++) {
+payload2.records.push({'fields':speakers[i]})
+}
 
-await airtable(payload)
+await airtable(payload,'Sessions%20Import');
+await wait(200);
+await airtable(payload2,'Speakers%20Import')
 
-async function airtable(payload) {
+async function airtable(payload,table) {
 
-    var airtableresp = await fetch('https://api.airtable.com/v0/appTwnTbrb7NXDfci/Sessions%20Import', {
+    var airtableresp = await fetch('https://api.airtable.com/v0/appTwnTbrb7NXDfci/'+table, {
     'method': 'POST',
     'headers': {
       'Content-Type': 'application/json',
@@ -73,7 +79,7 @@ async function airtable(payload) {
   payload.records=payload.records.slice(10)
   if (payload.records.length>0) {
   await wait(200)
-  await airtable(payload)
+  await airtable(payload,table)
   }
   })
   
