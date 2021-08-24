@@ -23,7 +23,7 @@ client=client+'_'+(new Date()).toISOString();
 	}
 	
 	if (!sessions.hasOwnProperty(data[i]['sessionid'])) {
-	sessions[data[i]['sessionid']]={'ImportId':client,'Name':data[i]['sessiontitle'],'Start time':data[i]['sessionfrom'],'End time':data[i]['sessionto'],'Date':data[i]['sessiondate'],'Session type':data[i]['sessiontype'],'Stage':data[i]['room']}
+	sessions[data[i]['sessionid']]={'Session Id':data[i]['sessionid'],'ImportId':client,'Name':data[i]['sessiontitle'],'Start time':data[i]['sessionfrom'],'End time':data[i]['sessionto'],'Date':data[i]['sessiondate'],'Session type':data[i]['sessiontype'],'Stage':data[i]['room']}
 	
 		if (data[i]['role']=='Speaker') {
 		sessions[data[i]['sessionid']]['Speakers']=[data[i]['email']];
@@ -125,7 +125,7 @@ client=client+'_'+(new Date()).toISOString();
 	var data2=[];
     for (var i=0;i<data.length;i++) {
 		for (var k=1;k<6;k++) {
-			if ((!addedchairs.hasOwnProperty(data[i]['sessionid']) || (addedchairs.hasOwnProperty(data[i]['sessionid']) && !(addedchairs[data[i]['sessionid']]).hasOwnProperty(data[i]['chair'+k+'_email']) )) &&data[i]['chair'+k+'_email']!='' && data[i]['chair'+k+'_email']!=null) {
+			if ((!addedchairs.hasOwnProperty(data[i]['sessionid']) || (addedchairs.hasOwnProperty(data[i]['sessionid']) && !(addedchairs[data[i]['sessionid']]).hasOwnProperty(data[i]['chair'+k+'_email']) )) && data[i]['chair'+k+'_email']!='' && data[i]['chair'+k+'_email']!=null) {
 		var tempobj=data[i];
 		tempobj['role']='Chair';
 		tempobj['firstname']=data[i]['chair'+k+'_firstname'];
@@ -135,6 +135,7 @@ client=client+'_'+(new Date()).toISOString();
 		tempobj['country']='';
 		tempobj['email']=String(data[i]['chair'+k+'_email']).toLowerCase();
 		data2.push(tempobj)
+		console.log(data2)
 		if (!addedchairs.hasOwnProperty(data[i]['sessionid'])) { 
 		addedchairs[data[i]['sessionid']]={};
 		}
@@ -142,8 +143,9 @@ client=client+'_'+(new Date()).toISOString();
 			}
 		}
 	}
+
 	data=data.concat(data2);
-	var includekeys={'firstname':1,'lastname':1,'email':1,'city':1,'country':1,'sessiontitle':1,'sessiondate':1,'sessionfrom':1,'sessionto':1,'sessiontype':1,'room':1,'role':1,'sessionid':1}
+	var includekeys={'presentertitle':1,'firstname':1,'lastname':1,'email':1,'city':1,'country':1,'sessiontitle':1,'sessiondate':1,'sessionfrom':1,'sessionto':1,'sessiontype':1,'room':1,'role':1,'sessionid':1}
     data=data.map(function(v){
 		var newv={};
 		for (var key in v) { if (includekeys.hasOwnProperty(key)) { newv[key]=v[key]}}
@@ -160,7 +162,7 @@ client=client+'_'+(new Date()).toISOString();
 	}
 	
 	if (!sessions.hasOwnProperty(data[i]['sessionid'])) {
-	sessions[data[i]['sessionid']]={'ImportId':client,'Name':data[i]['sessiontitle'],'Start time':data[i]['sessionfrom'],'End time':data[i]['sessionto'],'Date':data[i]['sessiondate'],'Session type':data[i]['sessiontype'],'Stage':data[i]['room']}
+	sessions[data[i]['sessionid']]={'Session Id':data[i]['sessionid'],'ImportId':client,'Name':data[i]['sessiontitle'],'Start time':data[i]['sessionfrom'],'End time':data[i]['sessionto'],'Date':data[i]['sessiondate'],'Session type':data[i]['sessiontype'],'Stage':data[i]['room']}
 	
 		if (data[i]['role']=='Speaker') {
 		sessions[data[i]['sessionid']]['Speakers']=[data[i]['email']];
