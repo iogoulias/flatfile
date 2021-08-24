@@ -126,7 +126,7 @@ client=client+'_'+(new Date()).toISOString();
     for (var i=0;i<data.length;i++) {
 		for (var k=1;k<6;k++) {
 			if ((!addedchairs.hasOwnProperty(data[i]['sessionid']) || (addedchairs.hasOwnProperty(data[i]['sessionid']) && !(addedchairs[data[i]['sessionid']]).hasOwnProperty(data[i]['chair'+k+'_email']) )) && data[i]['chair'+k+'_email']!='' && data[i]['chair'+k+'_email']!=null) {
-		var tempobj=data[i];
+		var tempobj={ ...data[i]};
 		tempobj['role']='Chair';
 		tempobj['firstname']=data[i]['chair'+k+'_firstname'];
 		tempobj['lastname']=data[i]['chair'+k+'_lastname'];
@@ -134,7 +134,7 @@ client=client+'_'+(new Date()).toISOString();
 		tempobj['city']='';
 		tempobj['country']='';
 		tempobj['email']=String(data[i]['chair'+k+'_email']).toLowerCase();
-		data2.push(tempobj)
+		data2.push({ ...tempobj })
 		console.log(tempobj)
 		console.log('k: '+k);
 		console.log('chair_k_email: '+String(data[i]['chair'+k+'_email']).toLowerCase())
