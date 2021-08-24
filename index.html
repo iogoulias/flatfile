@@ -4,6 +4,7 @@
     var data=(results.data);
 	var speakers={};
 	var sessions={};
+	results.data=results.data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']} return v})
 	for (var i=0;i<data.length;i++) {
 	if (!speakers.hasOwnProperty(data[i]['email'])) {
 	speakers[data[i]['email']]={'Name':data[i]['firstname']+' '+data[i]['lastname'],
@@ -164,17 +165,7 @@ importer.registerRecordHook(record => {
       ]  
   }
   }
-  if (record.sessionid==null || record.sessionid=="" || !record.hasOwnProperty("sessionid")) {
- out.sessionid = {
-      value: record.sessiontitle,
-      info: [
-        {
-          message: 'Fixed Session Id Format',
-          level: 'info'
-        }
-      ]  
-  }    
-  }
+
   if (record.role!=null && record.role!="") {
   if (((record.role).toLowerCase()).indexOf("speaker")>-1) {
   out.role = {
