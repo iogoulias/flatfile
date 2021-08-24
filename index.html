@@ -51,6 +51,7 @@
     sessions=sessions.map(function(value){value['Speakers']=(value['Speakers']).join(','); return value});
 	sessions=sessions.map(function(value){value['Moderators']=(value['Moderators']).join(','); return value});
 	speakers=speakers.map(function(value){value['Sessions']=(value['Sessions']).join(','); return value});
+var payload={'records':[]};
 	for (var i=0;i<sessions.length;i++) {
 payload.records.push({'fields':sessions[i]})
 }
