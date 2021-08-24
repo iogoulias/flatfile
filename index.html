@@ -1,6 +1,6 @@
   <label for="fname">Client:</label>
   <input type="text" id="fname" name="fname"><br><br>
-<button onclick="importer.requestDataFromUser().then(function(results) { 
+<button onclick="importer.requestDataFromUser().then(async function(results) { 
     var data=(results.data);
 	var speakers={};
 	var sessions={};
@@ -36,9 +36,51 @@
 	
 	
 	}
-	
+    sessions=sessions.map(function(value){value['Speakers']=(value['Speakers']).join(','); return value});
+	sessions=sessions.map(function(value){value['Moderators']=(value['Moderators']).join(','); return value});
+	speakers=speakers.map(function(value){value['Sessions']=(value['Sessions']).join(','); return value});
 	console.log(speakers)
 	console.log(sessions)
+	
+	for (var i=0;i<sessions.length;i++) {
+payload.records.push({'fields':sessions[i]})
+}
+
+await airtable(payload)
+
+async function airtable(payload) {
+
+    var airtableresp = await fetch('https://api.airtable.com/v0/appTwnTbrb7NXDfci/Sessions%20Import', {
+    'method': 'POST',
+    'headers': {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+'keyjBiRLhAGxVa5J9'
+    },
+    'body': JSON.stringify({records:payload.records.slice(0,10)})
+  }).then(x=>x.json()).then(
+  async function(data){
+  console.log(data);
+  payload.records=payload.records.slice(10)
+  if (payload.records.length>0) {
+  await wait(200)
+  await airtable(payload)
+  }
+  })
+  
+  }
+  
+  
+   function wait(ms) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('Done waiting');
+      resolve(ms)
+    }, ms )
+  })
+}
+	
+	
+	
     importer.displaySuccess('Thanks for uploading your data!')
 })">Start Import</button>
 
