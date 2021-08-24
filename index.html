@@ -38,7 +38,16 @@
 	}
 	console.log(speakers)
 	console.log(sessions)
-		
+	var sessions_arr=[];
+	var speakers_arr=[];
+	for (var key in speakers) {
+	speakers_arr.push(speakers[key])
+	}
+	for (var key in sessions) {
+	sessions_arr.push(sessions[key])
+	}
+	sessions=sessions_arr;
+	speakers=speakers_arr;
     sessions=sessions.map(function(value){value['Speakers']=(value['Speakers']).join(','); return value});
 	sessions=sessions.map(function(value){value['Moderators']=(value['Moderators']).join(','); return value});
 	speakers=speakers.map(function(value){value['Sessions']=(value['Sessions']).join(','); return value});
