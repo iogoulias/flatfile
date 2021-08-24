@@ -35,7 +35,7 @@ importer.setCustomer({userId: client});
 
 importer.registerRecordHook(record => {
   let out = {}
-  if (record.sessiondate && record.sessiondate!="" && record.sessiondate!=null && record.sessiondate!=new Date(record.sessiondate).toLocaleDateString('fr') ) {
+  if (record.sessiondate && record.sessiondate!="" && record.sessiondate!=null && (record.sessiondate).match("(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[012])[/](19|20)[0-9][0-9]")!=null ) {
     out.sessiondate = {
       value: new Date(record.sessiondate).toLocaleDateString('fr'),
       info: [
@@ -48,7 +48,7 @@ importer.registerRecordHook(record => {
   }
   if ( record.sessionfrom!=null && (record.sessionfrom).match(/\d\d:\d\d/gi)!=null && record.sessionfrom!=(record.sessionfrom).match(/\d\d:\d\d/gi)[0] ) {
   out.sessionfrom = {
-      value: new Date(record.sessionfrom).toLocaleDateString('fr'),
+      value: record.sessionfrom!=(record.sessionfrom).match(/\d\d:\d\d/gi)[0],
       info: [
         {
           message: 'Fixed Time Format',
@@ -59,7 +59,7 @@ importer.registerRecordHook(record => {
   }
   if ( record.sessionto!=null && (record.sessionto).match(/\d\d:\d\d/gi)!=null && record.sessionto!=(record.sessionto).match(/\d\d:\d\d/gi)[0] ) {
   out.sessionto = {
-      value: new Date(record.sessionto).toLocaleDateString('fr'),
+      value: record.sessionto!=(record.sessionto).match(/\d\d:\d\d/gi)[0],
       info: [
         {
           message: 'Fixed Time Format',
