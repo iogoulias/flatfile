@@ -8,14 +8,30 @@
 	if (!speakers.hasOwnProperty(data[i]['email'])) {
 	speakers[data[i]['email']]={'Name':data[i]['firstname']+' '+data[i]['lastname'],
 	'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country'],'Sessions':[data[i]['sessionid']]
-	}} else {
+	}
+	
+	} else {
 	(speakers[data[i]['email']]['Sessions']).push(data[i]['sessionid'])
 	}
 	
 	if (!sessions.hasOwnProperty(data[i]['sessionid'])) {
-	sessions[data[i]['sessionid']]={'Name':data[i]['sessiontitle'],'Start time':data[i]['sessionfrom'],'End time':data[i]['sessionto'],'Date':data[i]['sessiondate'],'Session type':data[i]['sessiontype'],'Stage':data[i]['room'],'Speakers':[data[i]['email']]}
+	sessions[data[i]['sessionid']]={'Name':data[i]['sessiontitle'],'Start time':data[i]['sessionfrom'],'End time':data[i]['sessionto'],'Date':data[i]['sessiondate'],'Session type':data[i]['sessiontype'],'Stage':data[i]['room']}
+	
+		if (data[i]['role']=='Speaker') {
+		sessions[data[i]['sessionid']]['Speakers']=[data[i]['email']];
+		sessions[data[i]['sessionid']]['Moderators']=[];
+		} else {			
+		sessions[data[i]['sessionid']]['Speakers']=[];
+		sessions[data[i]['sessionid']]['Moderators']=[data[i]['email']];
+		}
+	
 	} else {
+	if (data[i]['role']=='Speaker') {
 	(sessions[data[i]['sessionid']]['Speakers']).push(data[i]['email'])
+	} else {
+	(sessions[data[i]['sessionid']]['Moderators']).push(data[i]['email'])	
+	}
+	
 	}
 	
 	
@@ -43,6 +59,7 @@ const importer = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
 	  {key: "sessionto", label: "SessionTo", validators:[{validate:'regex_matches',regex:"^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",error: 'Invalid Time Format or Empty Field'}]},
 	  {key: "sessiontype", label: "SessionType"},
 	  {key: "room", label: "Room"},
+	  {key: "role", label: "Function", validators:[{validate:'regex_matches',regex:"^(Chair)|(Speaker)$",error: 'Invalid Role Format or Empty Field'}]},
 	  {key: "sessionid", label: "SessionID"},
     ],
   managed: true,
@@ -89,6 +106,40 @@ importer.registerRecordHook(record => {
       ]  
   }
   }
+  if (record.role!=null && record.role!="") {
+  if (((record.role).toLowerCase()).indexOf("speaker")>-1) {
+  out.role = {
+      value: "Speaker",
+      info: [
+        {
+          message: 'Fixed Role Format',
+          level: 'info'
+        }
+      ]  
+  }  
+  } else {
+  out.role = {
+      value: "Chair",
+      info: [
+        {
+          message: 'Fixed Role Format',
+          level: 'info'
+        }
+      ]  
+  }   
+  }
+  } else {
+  out.role = {
+      value: "Missing Info",
+      info: [
+        {
+          message: 'Missing Role Info',
+          level: 'info'
+        }
+      ]  
+  }    
+  }
+  
   return out
 })
 </script>
