@@ -67,6 +67,7 @@ client=client+'_'+(new Date()).toISOString();
 	presentations[data[i]['presentationid']]['Sessions']=[data[i]['sessionid']];
     presentations[data[i]['presentationid']]['Speakers']=[data[i]['email']];	
 	} else {
+	console.log(presentations[data[i]['presentationid']])
 	(presentations[data[i]['presentationid']]['Speakers']).push(data[i]['email'])
     (presentations[data[i]['presentationid']]['Sessions']).push(data[i]['sessionid'])	
 	}
