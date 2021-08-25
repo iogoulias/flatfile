@@ -15,11 +15,23 @@ client=client+'_'+(new Date()).toISOString();
 	for (var i=0;i<data.length;i++) {
 	if (!speakers.hasOwnProperty(data[i]['email'])) {
 	speakers[data[i]['email']]={'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
-	'ImportId':client,'Title':data[i]['presentertitle'],'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country'],'Sessions':[data[i]['sessionid']]
+	'ImportId':client,'Title':data[i]['presentertitle'],'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
+	}
+	if (data[i]['role']=='Speaker') {
+	speakers[data[i]['email']]['Speaking Sessions']=[data[i]['sessionid']]
+	speakers[data[i]['email']]['Moderating Sessions']=[];
+	} else {
+	speakers[data[i]['email']]['Moderating Sessions']=[data[i]['sessionid']]
+	speakers[data[i]['email']]['Speaking Sessions']=[];	
+	}
+	} else {
+	
+	if (data[i]['role']=='Speaker') {
+	(speakers[data[i]['email']]['Speaking Sessions']).push(data[i]['sessionid']);
+	} else {
+	(speakers[data[i]['email']]['Moderating Sessions']).push(data[i]['sessionid'])
 	}
 	
-	} else {
-	(speakers[data[i]['email']]['Sessions']).push(data[i]['sessionid'])
 	}
 	
 	if (!sessions.hasOwnProperty(data[i]['sessionid'])) {
@@ -121,7 +133,7 @@ client=client+'_'+(new Date()).toISOString();
 	var speakers={};
 	var sessions={};
 	var addedchairs={};
-	data=data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']}; v['email']=String(v['email']).toLowerCase();v['role']='Speaker'; return v})
+	data=data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']}; if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''};v['email']=String(v['email']).toLowerCase();v['role']='Speaker'; return v})
 	var data2=[];
     for (var i=0;i<data.length;i++) {
 		for (var k=1;k<6;k++) {
@@ -158,12 +170,24 @@ client=client+'_'+(new Date()).toISOString();
 	})
     for (var i=0;i<data.length;i++) {
 	if (!speakers.hasOwnProperty(data[i]['email'])) {
-	speakers[data[i]['email']]={'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
-	'ImportId':client,'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country'],'Sessions':[data[i]['sessionid']]
+	speakers[data[i]['email']]={'Title':data[i]['presentertitle'],'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
+	'ImportId':client,'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
+	}
+	
+	if (data[i]['role']=='Speaker') {
+	speakers[data[i]['email']]['Speaking Sessions']=[data[i]['sessionid']]
+	speakers[data[i]['email']]['Moderating Sessions']=[];
+	} else {
+	speakers[data[i]['email']]['Moderating Sessions']=[data[i]['sessionid']]
+	speakers[data[i]['email']]['Speaking Sessions']=[];	
 	}
 	
 	} else {
-	(speakers[data[i]['email']]['Sessions']).push(data[i]['sessionid'])
+	if (data[i]['role']=='Speaker') {
+	(speakers[data[i]['email']]['Speaking Sessions']).push(data[i]['sessionid']);
+	} else {
+	(speakers[data[i]['email']]['Moderating Sessions']).push(data[i]['sessionid'])
+	}
 	}
 	
 	if (!sessions.hasOwnProperty(data[i]['sessionid'])) {
