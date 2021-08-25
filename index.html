@@ -161,8 +161,15 @@ client=client+'_'+(new Date()).toISOString();
     var data=(results.data);
 	var speakers={};
 	var sessions={};
+	var presentations={};
 	var addedchairs={};
-	data=data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']}; if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''};v['email']=String(v['email']).toLowerCase(); if(!v.hasOwnProperty('email') || v['email']==null || v['email']=='' ){v['email']=(v['presentertitle']+' '+v['firstname']+' '+v['lastname']).trim()};v['role']='Speaker'; return v})
+	data=data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']}; 
+	if(!v.hasOwnProperty('presentationtitle') || v['presentationtitle']==null || v['presentationtitle']==''){v['presentationtitle']=v['sessiontitle']};
+	if(!v.hasOwnProperty('presentationfrom') || v['presentationfrom']==null || v['presentationfrom']==''){v['presentationfrom']=v['sessionfrom']};
+	if(!v.hasOwnProperty('presentationto') || v['presentationto']==null || v['presentationto']==''){v['presentationto']=v['sessionto']};
+	if(!v.hasOwnProperty('presentationid') || v['presentationid']==null || v['presentationid']==''){v['presentationid']=v['presentationtitle']};
+	if(!v.hasOwnProperty('presentationtype') || v['presentationtype']==null || v['presentationtype']==''){v['presentationtype']=v['sessiontype']};
+	if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''};v['email']=String(v['email']).toLowerCase(); if(!v.hasOwnProperty('email') || v['email']==null || v['email']=='' ){v['email']=(v['presentertitle']+' '+v['firstname']+' '+v['lastname']).trim()};v['role']='Speaker'; return v})
 	var data2=[];
     for (var i=0;i<data.length;i++) {
 		for (var k=1;k<6;k++) {
@@ -244,37 +251,57 @@ client=client+'_'+(new Date()).toISOString();
 	
 	}
 	
+	if (!presentations.hasOwnProperty(data[i]['presentationid'])) {
+	presentations[data[i]['presentationid']]={'Presentation Id':data[i]['presentationid'],'ImportId':client,'Name':data[i]['presentationtitle'],'Start time':data[i]['presentationfrom'],'End time':data[i]['presentationto'],'Date':data[i]['sessiondate'],'Presentation type':data[i]['presentationtype']}
+	presentations[data[i]['presentationid']]['Sessions']=[data[i]['sessionid']];
+    presentations[data[i]['presentationid']]['Speakers']=[data[i]['email']];	
+	} else {
+	(presentations[data[i]['presentationid']]['Speakers']).push(data[i]['email']);
+    (presentations[data[i]['presentationid']]['Sessions']).push(data[i]['sessionid']);	
+	}
 	
 	}
 	console.log(speakers)
 	console.log(sessions)
 	var sessions_arr=[];
 	var speakers_arr=[];
+	var presentations_arr=[];
 	for (var key in speakers) {
 	speakers_arr.push(speakers[key])
 	}
 	for (var key in sessions) {
 	sessions_arr.push(sessions[key])
 	}
+	for (var key in presentations) {
+	presentations_arr.push(presentations[key]);
+	}
 	sessions=sessions_arr;
 	speakers=speakers_arr;
+	presentations=presentations_arr;
     sessions=sessions.map(function(value){value['Speakers']=(value['Speakers']).join(','); return value});
 	sessions=sessions.map(function(value){value['Moderators']=(value['Moderators']).join(','); return value});
 	speakers=speakers.map(function(value){value['Speaking Sessions']=(value['Speaking Sessions']).join(','); return value});
 	speakers=speakers.map(function(value){value['Moderating Sessions']=(value['Moderating Sessions']).join(','); return value});
+    presentations=presentations.map(function(value){value['Speakers']=(value['Speakers']).join(','); return value});
+    presentations=presentations.map(function(value){value['Sessions']=(value['Sessions']).join(','); return value});
 
 var payload={'records':[]};
 var payload2={'records':[]};
+var payload3={'records':[]};
 	for (var i=0;i<sessions.length;i++) {
 payload.records.push({'fields':sessions[i]})
 }
 	for (var i=0;i<speakers.length;i++) {
 payload2.records.push({'fields':speakers[i]})
 }
-
+	for (var i=0;i<presentations.length;i++) {
+payload3.records.push({'fields':presentations[i]})
+}
 await airtable(payload,'Sessions%20Import');
 await wait(200);
-await airtable(payload2,'Speakers%20Import')
+await airtable(payload2,'Speakers%20Import');
+await wait(200);
+await airtable(payload3,'Presentations%20Import');
 
 async function airtable(payload,table) {
 
@@ -473,6 +500,11 @@ const importer2 = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
 	  {key: "sessiontype", label: "Session Type"},
 	  {key: "room", label: "Room Name"},
 	  {key: "sessionid", label: "Manage Session Id"},
+	  {key: "presentationtitle", label: "Presentation Title"},
+	  {key: "presentationid", label: "Presentation Id"},
+	  {key: "presentationfrom", label: "PresentationFrom",validators:[{validate:'regex_matches',regex:"^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",error: 'Invalid Time Format or Empty Field'}]},
+	  {key: "presentationto", label: "PresentationTo",validators:[{validate:'regex_matches',regex:"^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",error: 'Invalid Time Format or Empty Field'}]},
+	  {key: "presentationtype", label: "Presentation Type"}
     ],
   managed: true,
   devMode:true
@@ -510,6 +542,28 @@ importer2.registerRecordHook(record => {
   if ( record.sessionto!=null && (record.sessionto).match(/\d\d:\d\d/gi)!=null && record.sessionto!=(record.sessionto).match(/\d\d:\d\d/gi)[0] ) {
   out.sessionto = {
       value: (record.sessionto).match(/\d\d:\d\d/gi)[0],
+      info: [
+        {
+          message: 'Fixed Time Format',
+          level: 'info'
+        }
+      ]  
+  }
+  }
+    if ( record.presentationfrom!=null && (record.presentationfrom).match(/\d\d:\d\d/gi)!=null && record.presentationfrom!=(record.presentationfrom).match(/\d\d:\d\d/gi)[0] ) {
+  out.presentationfrom = {
+      value: (record.presentationfrom).match(/\d\d:\d\d/gi)[0],
+      info: [
+        {
+          message: 'Fixed Time Format',
+          level: 'info'
+        }
+      ]  
+  }
+  }
+  if ( record.presentationto!=null && (record.presentationto).match(/\d\d:\d\d/gi)!=null && record.presentationto!=(record.presentationto).match(/\d\d:\d\d/gi)[0] ) {
+  out.presentationto = {
+      value: (record.presentationto).match(/\d\d:\d\d/gi)[0],
       info: [
         {
           message: 'Fixed Time Format',
