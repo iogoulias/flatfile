@@ -11,11 +11,11 @@ client=client+'_'+(new Date()).toISOString();
     var data=(results.data);
 	var speakers={};
 	var sessions={};
-	data=data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']}; v['email']=String(v['email']).toLowerCase(); return v})
+	data=data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']};if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''}; v['email']=String(v['email']).toLowerCase(); return v})
 	for (var i=0;i<data.length;i++) {
 	if (!speakers.hasOwnProperty(data[i]['email'])) {
-	speakers[data[i]['email']]={'Name':data[i]['firstname']+' '+data[i]['lastname'],
-	'ImportId':client,'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country'],'Sessions':[data[i]['sessionid']]
+	speakers[data[i]['email']]={'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
+	'ImportId':client,'Title':data[i]['presentertitle'],'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country'],'Sessions':[data[i]['sessionid']]
 	}
 	
 	} else {
@@ -259,6 +259,7 @@ const importer = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
   fields: [
       {key: "firstname", label: "First name"},
 	  {key: "lastname", label: "Name"},
+	  {key: "presentertitle", label: "Presenter Title"},
 	  {key: "email", label: "Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "city", label: "City"},
 	  {key: "country", label: "Country"},
