@@ -11,7 +11,7 @@ client=client+'_'+(new Date()).toISOString();
     var data=(results.data);
 	var speakers={};
 	var sessions={};
-	data=data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']};if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''}; v['email']=String(v['email']).toLowerCase(); return v})
+	data=data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']};if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''}; v['email']=String(v['email']).toLowerCase(); if(!v.hasOwnProperty('email') || v['email']==null || v['email']=='' ){v['email']=(v['presentertitle']+' '+v['firstname']+' '+v['lastname']).trim()}; return v})
 	for (var i=0;i<data.length;i++) {
 	if (!speakers.hasOwnProperty(data[i]['email'])) {
 	speakers[data[i]['email']]={'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
@@ -135,7 +135,7 @@ client=client+'_'+(new Date()).toISOString();
 	var speakers={};
 	var sessions={};
 	var addedchairs={};
-	data=data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']}; if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''};v['email']=String(v['email']).toLowerCase();v['role']='Speaker'; return v})
+	data=data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']}; if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''};v['email']=String(v['email']).toLowerCase(); if(!v.hasOwnProperty('email') || v['email']==null || v['email']=='' ){v['email']=(v['presentertitle']+' '+v['firstname']+' '+v['lastname']).trim()};v['role']='Speaker'; return v})
 	var data2=[];
     for (var i=0;i<data.length;i++) {
 		for (var k=1;k<6;k++) {
