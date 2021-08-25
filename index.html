@@ -70,7 +70,9 @@ client=client+'_'+(new Date()).toISOString();
 	speakers=speakers_arr;
     sessions=sessions.map(function(value){value['Speakers']=(value['Speakers']).join(','); return value});
 	sessions=sessions.map(function(value){value['Moderators']=(value['Moderators']).join(','); return value});
-	speakers=speakers.map(function(value){value['Sessions']=(value['Sessions']).join(','); return value});
+	speakers=speakers.map(function(value){value['Speaking Sessions']=(value['Speaking Sessions']).join(','); return value});
+	speakers=speakers.map(function(value){value['Moderating Sessions']=(value['Moderating Sessions']).join(','); return value});
+
 var payload={'records':[]};
 var payload2={'records':[]};
 	for (var i=0;i<sessions.length;i++) {
@@ -226,7 +228,9 @@ client=client+'_'+(new Date()).toISOString();
 	speakers=speakers_arr;
     sessions=sessions.map(function(value){value['Speakers']=(value['Speakers']).join(','); return value});
 	sessions=sessions.map(function(value){value['Moderators']=(value['Moderators']).join(','); return value});
-	speakers=speakers.map(function(value){value['Sessions']=(value['Sessions']).join(','); return value});
+	speakers=speakers.map(function(value){value['Speaking Sessions']=(value['Speaking Sessions']).join(','); return value});
+	speakers=speakers.map(function(value){value['Moderating Sessions']=(value['Moderating Sessions']).join(','); return value});
+
 var payload={'records':[]};
 var payload2={'records':[]};
 	for (var i=0;i<sessions.length;i++) {
