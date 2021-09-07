@@ -209,7 +209,7 @@ client=client+'_'+(new Date()).toISOString();
 		}
 	}
 	data=data.concat(data2);
-	var includekeys={'presentationid':1,'presentationtitle':1,'presentationfrom':1,'presentationto':1,'presentationtype':1,'presentertitle':1,'firstname':1,'lastname':1,'email':1,'city':1,'country':1,'sessiontitle':1,'sessiondate':1,'sessionfrom':1,'sessionto':1,'sessiontype':1,'room':1,'role':1,'sessionid':1}
+	var includekeys={'previous_email':1,'presentationid':1,'presentationtitle':1,'presentationfrom':1,'presentationto':1,'presentationtype':1,'presentertitle':1,'firstname':1,'lastname':1,'email':1,'city':1,'country':1,'sessiontitle':1,'sessiondate':1,'sessionfrom':1,'sessionto':1,'sessiontype':1,'room':1,'role':1,'sessionid':1}
     data=data.map(function(v){
 		var newv={};
 		for (var key in v) { if (includekeys.hasOwnProperty(key)) { newv[key]=v[key]}}
