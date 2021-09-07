@@ -13,16 +13,19 @@ client=client+'_'+(new Date()).toISOString();
 	var sessions={};
 	var presentations={};
 	data=data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']};
+	if(!v.hasOwnProperty('previous_email') || v['previous_email']==null){v['previous_email']=''};
 	if(!v.hasOwnProperty('presentationtitle') || v['presentationtitle']==null || v['presentationtitle']==''){v['presentationtitle']=v['sessiontitle']};
 	if(!v.hasOwnProperty('presentationfrom') || v['presentationfrom']==null || v['presentationfrom']==''){v['presentationfrom']=v['sessionfrom']};
 	if(!v.hasOwnProperty('presentationto') || v['presentationto']==null || v['presentationto']==''){v['presentationto']=v['sessionto']};
 	if(!v.hasOwnProperty('presentationid') || v['presentationid']==null || v['presentationid']==''){v['presentationid']=v['presentationtitle']};
 	if(!v.hasOwnProperty('presentationtype') || v['presentationtype']==null || v['presentationtype']==''){v['presentationtype']=v['sessiontype']};
 	if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''}; v['email']=String(v['email']).toLowerCase(); if(!v.hasOwnProperty('email') || v['email']==null || v['email']=='' ){v['email']=(v['presentertitle']+' '+v['firstname']+' '+v['lastname']).trim()}; return v})
+
 	for (var i=0;i<data.length;i++) {
+
 	if (!speakers.hasOwnProperty(data[i]['email'])) {
 	speakers[data[i]['email']]={'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
-	'ImportId':client,'Title':data[i]['presentertitle'],'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
+	'ImportId':client,'Title':data[i]['presentertitle'],'Previous Email':data[i]['previous_email'],'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
 	}
 	if (data[i]['role']=='Speaker') {
 	speakers[data[i]['email']]['Speaking Sessions']=[data[i]['sessionid']]
@@ -112,9 +115,7 @@ await wait(200);
 await airtable(payload2,'Speakers%20Import');
 await wait(200);
 await airtable(payload3,'Presentations%20Import')
-
 async function airtable(payload,table) {
-
     var airtableresp = await fetch('https://api.airtable.com/v0/appTwnTbrb7NXDfci/'+table, {
     'method': 'POST',
     'headers': {
@@ -164,6 +165,12 @@ client=client+'_'+(new Date()).toISOString();
 	var presentations={};
 	var addedchairs={};
 	data=data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']}; 
+	if(!v.hasOwnProperty('previous_email') || v['previous_email']==null){v['previous_email']=''};
+	if(!v.hasOwnProperty('previous_email_chair1') || v['previous_email_chair1']==null){v['previous_email_chair1']=''};
+	if(!v.hasOwnProperty('previous_email_chair2') || v['previous_email_chair2']==null){v['previous_email_chair2']=''};
+	if(!v.hasOwnProperty('previous_email_chair3') || v['previous_email_chair3']==null){v['previous_email_chair3']=''};
+	if(!v.hasOwnProperty('previous_email_chair4') || v['previous_email_chair4']==null){v['previous_email_chair4']=''};
+	if(!v.hasOwnProperty('previous_email_chair5') || v['previous_email_chair5']==null){v['previous_email_chair5']=''};
 	if(!v.hasOwnProperty('presentationtitle') || v['presentationtitle']==null || v['presentationtitle']==''){v['presentationtitle']=v['sessiontitle']};
 	if(!v.hasOwnProperty('presentationfrom') || v['presentationfrom']==null || v['presentationfrom']==''){v['presentationfrom']=v['sessionfrom']};
 	if(!v.hasOwnProperty('presentationto') || v['presentationto']==null || v['presentationto']==''){v['presentationto']=v['sessionto']};
@@ -186,7 +193,7 @@ client=client+'_'+(new Date()).toISOString();
 		tempobj['city']='';
 		tempobj['country']='';
 		tempobj['email']=String(data[i]['chair'+k+'_email']).toLowerCase();
-		
+		tempobj['previous_email']=String(data[i]['previous_email_chair'+k]).toLowerCase();
 		data2.push({ ...tempobj })
 		console.log(tempobj)
 		console.log('k: '+k);
@@ -201,7 +208,6 @@ client=client+'_'+(new Date()).toISOString();
 			}
 		}
 	}
-
 	data=data.concat(data2);
 	var includekeys={'presentationid':1,'presentationtitle':1,'presentationfrom':1,'presentationto':1,'presentationtype':1,'presentertitle':1,'firstname':1,'lastname':1,'email':1,'city':1,'country':1,'sessiontitle':1,'sessiondate':1,'sessionfrom':1,'sessionto':1,'sessiontype':1,'room':1,'role':1,'sessionid':1}
     data=data.map(function(v){
@@ -212,7 +218,7 @@ client=client+'_'+(new Date()).toISOString();
     for (var i=0;i<data.length;i++) {
 	if (!speakers.hasOwnProperty(data[i]['email'])) {
 	speakers[data[i]['email']]={'Title':data[i]['presentertitle'],'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
-	'ImportId':client,'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
+	'ImportId':client,'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Previous Email':data[i]['previous_email'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
 	}
 	
 	if (data[i]['role']=='Speaker') {
@@ -285,7 +291,6 @@ client=client+'_'+(new Date()).toISOString();
 	speakers=speakers.map(function(value){value['Moderating Sessions']=(value['Moderating Sessions']).join('||'); return value});
     presentations=presentations.map(function(value){value['Speakers']=(value['Speakers']).join('||'); return value});
     presentations=presentations.map(function(value){value['Sessions']=(value['Sessions']).join('||'); return value});
-
 var payload={'records':[]};
 var payload2={'records':[]};
 var payload3={'records':[]};
@@ -303,9 +308,7 @@ await wait(200);
 await airtable(payload2,'Speakers%20Import');
 await wait(200);
 await airtable(payload3,'Presentations%20Import');
-
 async function airtable(payload,table) {
-
     var airtableresp = await fetch('https://api.airtable.com/v0/appTwnTbrb7NXDfci/'+table, {
     'method': 'POST',
     'headers': {
@@ -349,6 +352,7 @@ const importer = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
 	  {key: "lastname", label: "Name"},
 	  {key: "presentertitle", label: "Presenter Title"},
 	  {key: "email", label: "Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
+	  {key: "previous_email", label: "Previous Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "city", label: "City"},
 	  {key: "country", label: "Country"},
 	  {key: "sessiontitle", label: "SessionTitle"},
@@ -477,23 +481,29 @@ const importer2 = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
 	  {key: "lastname", label: "Presenter Surname"},
 	  {key: "presentertitle", label: "Presenter Title"},
 	  {key: "email", label: "Presentation Author Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
+	  {key: "previous_email", label: "Previous Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "city", label: "Presenter City"},
 	  {key: "country", label: "Presentation Authors Country"},
 	  {key: "chair1_firstname", label: "Chair1 Firstname"},
 	  {key: "chair1_lastname", label: "Chair1 Surname"},
 	  {key: "chair1_email", label: "Chair1 Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
+	  {key: "previous_email_chair1", label: "Chair 1 Previous Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "chair2_firstname", label: "chair2 Firstname"},
 	  {key: "chair2_lastname", label: "chair2 Surname"},
 	  {key: "chair2_email", label: "chair2 Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
+	  {key: "previous_email_chair2", label: "Chair 2 Previous Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "chair3_firstname", label: "chair3 Firstname"},
 	  {key: "chair3_lastname", label: "chair3 Surname"},
 	  {key: "chair3_email", label: "chair3 Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
+	  {key: "previous_email_chair3", label: "Chair 3 Previous Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "chair4_firstname", label: "chair4 Firstname"},
 	  {key: "chair4_lastname", label: "chair4 Surname"},
 	  {key: "chair4_email", label: "chair4 Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
+	  {key: "previous_email_chair4", label: "Chair 4 Previous Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "chair5_firstname", label: "chair5 Firstname"},
 	  {key: "chair5_lastname", label: "chair5 Surname"},
 	  {key: "chair5_email", label: "chair5 Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},	  	  
+	  {key: "previous_email_chair5", label: "Chair 5 Previous Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "sessiontitle", label: "Session Title"},
 	  {key: "sessiondate", label: "Session Date",validators:[{validate:'regex_matches',regex:"^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[012])[/](19|20)[0-9][0-9]$",error: 'Invalid Date Format or Empty Field'}]},
 	  {key: "sessionfrom", label: "Session Start",validators:[{validate:'regex_matches',regex:"^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",error: 'Invalid Time Format or Empty Field'}]},
