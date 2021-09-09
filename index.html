@@ -26,7 +26,7 @@ client=client+'_'+(new Date()).toISOString();
 	for (var i=0;i<data.length;i++) {
 	if (!speakers.hasOwnProperty(data[i]['speakerid'])) {
 	speakers[data[i]['speakerid']]={'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
-	'ImportId':client,'Title':data[i]['presentertitle'],'Previous Email':data[i]['previous_email'],'Speaker Id':data[i]['speakerid'],'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
+	'ImportId':client,'Title':data[i]['presentertitle'],'Previous Email':data[i]['previous_email'],'Speaker ID':data[i]['speakerid'],'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
 	}
 	if (data[i]['role']=='Speaker') {
 	speakers[data[i]['speakerid']]['Speaking Sessions']=[data[i]['sessionid']]
@@ -224,7 +224,7 @@ if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='')
     for (var i=0;i<data.length;i++) {
 	if (!speakers.hasOwnProperty(data[i]['speakerid'])) {
 	speakers[data[i]['speakerid']]={'Title':data[i]['presentertitle'],'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
-	'ImportId':client,'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Speaker Id':data[i]['speakerid'],'Previous Email':data[i]['previous_email'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
+	'ImportId':client,'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Speaker ID':data[i]['speakerid'],'Previous Email':data[i]['previous_email'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
 	}
 	
 	if (data[i]['role']=='Speaker') {
