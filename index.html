@@ -7,6 +7,7 @@ var client=document.getElementById('fname').value;
 if (client==null || client=='') {
 client=12345;
 }
+var client_key=client;
 client=client+'_'+(new Date()).toISOString();
     var data=(results.data);
 	var speakers={};
@@ -20,7 +21,7 @@ client=client+'_'+(new Date()).toISOString();
 	if(!v.hasOwnProperty('presentationid') || v['presentationid']==null || v['presentationid']==''){v['presentationid']=v['presentationtitle']};
 	if(!v.hasOwnProperty('presentationtype') || v['presentationtype']==null || v['presentationtype']==''){v['presentationtype']=v['sessiontype']};
 	if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''}; v['email']=String(v['email']).toLowerCase(); if(!v.hasOwnProperty('email') || v['email']==null || v['email']=='' ){v['email']=(v['presentertitle']+' '+v['firstname']+' '+v['lastname']).trim()};
-    if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']==''){v['speakerid']=v['email']};v['speakerid']=v['speakerid']+'_'+client;
+    if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']==''){v['speakerid']=v['email']};v['speakerid']=v['speakerid']+'_'+client_key;
 	return v})
 	for (var i=0;i<data.length;i++) {
 	if (!speakers.hasOwnProperty(data[i]['speakerid'])) {
@@ -158,7 +159,9 @@ var client=document.getElementById('fname2').value;
 if (client==null || client=='') {
 client=12345;
 }
+var client_key=client;
 client=client+'_'+(new Date()).toISOString();
+
     var data=(results.data);
 	var speakers={};
 	var sessions={};
@@ -177,7 +180,7 @@ client=client+'_'+(new Date()).toISOString();
 	if(!v.hasOwnProperty('presentationid') || v['presentationid']==null || v['presentationid']==''){v['presentationid']=v['presentationtitle']};
 	if(!v.hasOwnProperty('presentationtype') || v['presentationtype']==null || v['presentationtype']==''){v['presentationtype']=v['sessiontype']};
 	if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''};v['email']=String(v['email']).toLowerCase(); if(!v.hasOwnProperty('email') || v['email']==null || v['email']=='' ){v['email']=(v['presentertitle']+' '+v['firstname']+' '+v['lastname']).trim()};v['role']='Speaker';
-if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']==''){v['speakerid']=v['email']};v['speakerid']=v['speakerid']+'_'+client;
+if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']==''){v['speakerid']=v['email']};v['speakerid']=v['speakerid']+'_'+client_key;
 	return v})
 	var data2=[];
     for (var i=0;i<data.length;i++) {
