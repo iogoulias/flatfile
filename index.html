@@ -19,27 +19,27 @@ client=client+'_'+(new Date()).toISOString();
 	if(!v.hasOwnProperty('presentationto') || v['presentationto']==null || v['presentationto']==''){v['presentationto']=v['sessionto']};
 	if(!v.hasOwnProperty('presentationid') || v['presentationid']==null || v['presentationid']==''){v['presentationid']=v['presentationtitle']};
 	if(!v.hasOwnProperty('presentationtype') || v['presentationtype']==null || v['presentationtype']==''){v['presentationtype']=v['sessiontype']};
-	if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''}; v['email']=String(v['email']).toLowerCase(); if(!v.hasOwnProperty('email') || v['email']==null || v['email']=='' ){v['email']=(v['presentertitle']+' '+v['firstname']+' '+v['lastname']).trim()}; return v})
-
+	if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''}; v['email']=String(v['email']).toLowerCase(); if(!v.hasOwnProperty('email') || v['email']==null || v['email']=='' ){v['email']=(v['presentertitle']+' '+v['firstname']+' '+v['lastname']).trim()};
+    if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']==''){v['speakerid']=v['email']}
+	return v})
 	for (var i=0;i<data.length;i++) {
-
-	if (!speakers.hasOwnProperty(data[i]['email'])) {
-	speakers[data[i]['email']]={'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
-	'ImportId':client,'Title':data[i]['presentertitle'],'Previous Email':data[i]['previous_email'],'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
+	if (!speakers.hasOwnProperty(data[i]['speakerid'])) {
+	speakers[data[i]['speakerid']]={'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
+	'ImportId':client,'Title':data[i]['presentertitle'],'Previous Email':data[i]['previous_email'],'Speaker Id':data[i]['speakerid'],'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
 	}
 	if (data[i]['role']=='Speaker') {
-	speakers[data[i]['email']]['Speaking Sessions']=[data[i]['sessionid']]
-	speakers[data[i]['email']]['Moderating Sessions']=[];
+	speakers[data[i]['speakerid']]['Speaking Sessions']=[data[i]['sessionid']]
+	speakers[data[i]['speakerid']]['Moderating Sessions']=[];
 	} else {
-	speakers[data[i]['email']]['Moderating Sessions']=[data[i]['sessionid']]
-	speakers[data[i]['email']]['Speaking Sessions']=[];	
+	speakers[data[i]['speakerid']]['Moderating Sessions']=[data[i]['sessionid']]
+	speakers[data[i]['speakerid']]['Speaking Sessions']=[];	
 	}
 	} else {
 	
 	if (data[i]['role']=='Speaker') {
-	(speakers[data[i]['email']]['Speaking Sessions']).push(data[i]['sessionid']);
+	(speakers[data[i]['speakerid']]['Speaking Sessions']).push(data[i]['sessionid']);
 	} else {
-	(speakers[data[i]['email']]['Moderating Sessions']).push(data[i]['sessionid'])
+	(speakers[data[i]['speakerid']]['Moderating Sessions']).push(data[i]['sessionid'])
 	}
 	
 	}
@@ -48,18 +48,18 @@ client=client+'_'+(new Date()).toISOString();
 	sessions[data[i]['sessionid']]={'Session Id':data[i]['sessionid'],'ImportId':client,'Name':data[i]['sessiontitle'],'Start time':data[i]['sessionfrom'],'End time':data[i]['sessionto'],'Date':data[i]['sessiondate'],'Session type':data[i]['sessiontype'],'Stage':data[i]['room']}
 	
 		if (data[i]['role']=='Speaker') {
-		sessions[data[i]['sessionid']]['Speakers']=[data[i]['email']];
+		sessions[data[i]['sessionid']]['Speakers']=[data[i]['speakerid']];
 		sessions[data[i]['sessionid']]['Moderators']=[];
 		} else {			
 		sessions[data[i]['sessionid']]['Speakers']=[];
-		sessions[data[i]['sessionid']]['Moderators']=[data[i]['email']];
+		sessions[data[i]['sessionid']]['Moderators']=[data[i]['speakerid']];
 		}
 	
 	} else {
 	if (data[i]['role']=='Speaker') {
-	(sessions[data[i]['sessionid']]['Speakers']).push(data[i]['email']);
+	(sessions[data[i]['sessionid']]['Speakers']).push(data[i]['speakerid']);
 	} else {
-	(sessions[data[i]['sessionid']]['Moderators']).push(data[i]['email']);	
+	(sessions[data[i]['sessionid']]['Moderators']).push(data[i]['speakerid']);	
 	}
 	
 	}
@@ -68,9 +68,9 @@ client=client+'_'+(new Date()).toISOString();
 	if (!presentations.hasOwnProperty(data[i]['presentationid'])) {
 	presentations[data[i]['presentationid']]={'Presentation Id':data[i]['presentationid'],'ImportId':client,'Name':data[i]['presentationtitle'],'Start time':data[i]['presentationfrom'],'End time':data[i]['presentationto'],'Date':data[i]['sessiondate'],'Presentation type':data[i]['presentationtype']}
 	presentations[data[i]['presentationid']]['Sessions']=[data[i]['sessionid']];
-    presentations[data[i]['presentationid']]['Speakers']=[data[i]['email']];	
+    presentations[data[i]['presentationid']]['Speakers']=[data[i]['speakerid']];	
 	} else {
-	(presentations[data[i]['presentationid']]['Speakers']).push(data[i]['email']);
+	(presentations[data[i]['presentationid']]['Speakers']).push(data[i]['speakerid']);
     (presentations[data[i]['presentationid']]['Sessions']).push(data[i]['sessionid']);	
 	}
 	
@@ -176,7 +176,9 @@ client=client+'_'+(new Date()).toISOString();
 	if(!v.hasOwnProperty('presentationto') || v['presentationto']==null || v['presentationto']==''){v['presentationto']=v['sessionto']};
 	if(!v.hasOwnProperty('presentationid') || v['presentationid']==null || v['presentationid']==''){v['presentationid']=v['presentationtitle']};
 	if(!v.hasOwnProperty('presentationtype') || v['presentationtype']==null || v['presentationtype']==''){v['presentationtype']=v['sessiontype']};
-	if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''};v['email']=String(v['email']).toLowerCase(); if(!v.hasOwnProperty('email') || v['email']==null || v['email']=='' ){v['email']=(v['presentertitle']+' '+v['firstname']+' '+v['lastname']).trim()};v['role']='Speaker'; return v})
+	if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''};v['email']=String(v['email']).toLowerCase(); if(!v.hasOwnProperty('email') || v['email']==null || v['email']=='' ){v['email']=(v['presentertitle']+' '+v['firstname']+' '+v['lastname']).trim()};v['role']='Speaker';
+if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']==''){v['speakerid']=v['email']}
+	return v})
 	var data2=[];
     for (var i=0;i<data.length;i++) {
 		for (var k=1;k<6;k++) {
@@ -193,6 +195,7 @@ client=client+'_'+(new Date()).toISOString();
 		tempobj['city']='';
 		tempobj['country']='';
 		tempobj['email']=String(data[i]['chair'+k+'_email']).toLowerCase();
+		tempobj['speakerid']=tempobj['email'];
 		tempobj['previous_email']=String(data[i]['previous_email_chair'+k]).toLowerCase();
 		data2.push({ ...tempobj })
 		console.log(tempobj)
@@ -209,31 +212,31 @@ client=client+'_'+(new Date()).toISOString();
 		}
 	}
 	data=data.concat(data2);
-	var includekeys={'previous_email':1,'presentationid':1,'presentationtitle':1,'presentationfrom':1,'presentationto':1,'presentationtype':1,'presentertitle':1,'firstname':1,'lastname':1,'email':1,'city':1,'country':1,'sessiontitle':1,'sessiondate':1,'sessionfrom':1,'sessionto':1,'sessiontype':1,'room':1,'role':1,'sessionid':1}
+	var includekeys={'speakerid':1,'previous_email':1,'presentationid':1,'presentationtitle':1,'presentationfrom':1,'presentationto':1,'presentationtype':1,'presentertitle':1,'firstname':1,'lastname':1,'email':1,'city':1,'country':1,'sessiontitle':1,'sessiondate':1,'sessionfrom':1,'sessionto':1,'sessiontype':1,'room':1,'role':1,'sessionid':1}
     data=data.map(function(v){
 		var newv={};
 		for (var key in v) { if (includekeys.hasOwnProperty(key)) { newv[key]=v[key]}}
 		return newv;
 	})
     for (var i=0;i<data.length;i++) {
-	if (!speakers.hasOwnProperty(data[i]['email'])) {
-	speakers[data[i]['email']]={'Title':data[i]['presentertitle'],'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
-	'ImportId':client,'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Previous Email':data[i]['previous_email'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
+	if (!speakers.hasOwnProperty(data[i]['speakerid'])) {
+	speakers[data[i]['speakerid']]={'Title':data[i]['presentertitle'],'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
+	'ImportId':client,'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Speaker Id':data[i]['speakerid'],'Previous Email':data[i]['previous_email'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
 	}
 	
 	if (data[i]['role']=='Speaker') {
-	speakers[data[i]['email']]['Speaking Sessions']=[data[i]['sessionid']]
-	speakers[data[i]['email']]['Moderating Sessions']=[];
+	speakers[data[i]['speakerid']]['Speaking Sessions']=[data[i]['sessionid']]
+	speakers[data[i]['speakerid']]['Moderating Sessions']=[];
 	} else {
-	speakers[data[i]['email']]['Moderating Sessions']=[data[i]['sessionid']]
-	speakers[data[i]['email']]['Speaking Sessions']=[];	
+	speakers[data[i]['speakerid']]['Moderating Sessions']=[data[i]['sessionid']]
+	speakers[data[i]['speakerid']]['Speaking Sessions']=[];	
 	}
 	
 	} else {
 	if (data[i]['role']=='Speaker') {
-	(speakers[data[i]['email']]['Speaking Sessions']).push(data[i]['sessionid']);
+	(speakers[data[i]['speakerid']]['Speaking Sessions']).push(data[i]['sessionid']);
 	} else {
-	(speakers[data[i]['email']]['Moderating Sessions']).push(data[i]['sessionid'])
+	(speakers[data[i]['speakerid']]['Moderating Sessions']).push(data[i]['sessionid'])
 	}
 	}
 	
@@ -241,18 +244,18 @@ client=client+'_'+(new Date()).toISOString();
 	sessions[data[i]['sessionid']]={'Session Id':data[i]['sessionid'],'ImportId':client,'Name':data[i]['sessiontitle'],'Start time':data[i]['sessionfrom'],'End time':data[i]['sessionto'],'Date':data[i]['sessiondate'],'Session type':data[i]['sessiontype'],'Stage':data[i]['room']}
 	
 		if (data[i]['role']=='Speaker') {
-		sessions[data[i]['sessionid']]['Speakers']=[data[i]['email']];
+		sessions[data[i]['sessionid']]['Speakers']=[data[i]['speakerid']];
 		sessions[data[i]['sessionid']]['Moderators']=[];
 		} else {			
 		sessions[data[i]['sessionid']]['Speakers']=[];
-		sessions[data[i]['sessionid']]['Moderators']=[data[i]['email']];
+		sessions[data[i]['sessionid']]['Moderators']=[data[i]['speakerid']];
 		}
 	
 	} else {
 	if (data[i]['role']=='Speaker') {
-	(sessions[data[i]['sessionid']]['Speakers']).push(data[i]['email'])
+	(sessions[data[i]['sessionid']]['Speakers']).push(data[i]['speakerid'])
 	} else {
-	(sessions[data[i]['sessionid']]['Moderators']).push(data[i]['email'])	
+	(sessions[data[i]['sessionid']]['Moderators']).push(data[i]['speakerid'])	
 	}
 	
 	}
@@ -260,9 +263,9 @@ client=client+'_'+(new Date()).toISOString();
 	if (!presentations.hasOwnProperty(data[i]['presentationid'])) {
 	presentations[data[i]['presentationid']]={'Presentation Id':data[i]['presentationid'],'ImportId':client,'Name':data[i]['presentationtitle'],'Start time':data[i]['presentationfrom'],'End time':data[i]['presentationto'],'Date':data[i]['sessiondate'],'Presentation type':data[i]['presentationtype']}
 	presentations[data[i]['presentationid']]['Sessions']=[data[i]['sessionid']];
-    presentations[data[i]['presentationid']]['Speakers']=[data[i]['email']];	
+    presentations[data[i]['presentationid']]['Speakers']=[data[i]['speakerid']];	
 	} else {
-	(presentations[data[i]['presentationid']]['Speakers']).push(data[i]['email']);
+	(presentations[data[i]['presentationid']]['Speakers']).push(data[i]['speakerid']);
     (presentations[data[i]['presentationid']]['Sessions']).push(data[i]['sessionid']);	
 	}
 	
@@ -351,6 +354,7 @@ const importer = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
       {key: "firstname", label: "First name"},
 	  {key: "lastname", label: "Name"},
 	  {key: "presentertitle", label: "Presenter Title"},
+	  {key: "speakerid", label: "Speaker Id"},
 	  {key: "email", label: "Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "previous_email", label: "Previous Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "city", label: "City"},
@@ -480,6 +484,7 @@ const importer2 = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
       {key: "firstname", label: "Presenter First Name"},
 	  {key: "lastname", label: "Presenter Surname"},
 	  {key: "presentertitle", label: "Presenter Title"},
+	  {key: "speakerid", label: "Speaker Id"},
 	  {key: "email", label: "Presentation Author Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "previous_email", label: "Previous Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "city", label: "Presenter City"},
