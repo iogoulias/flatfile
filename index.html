@@ -161,7 +161,6 @@ client=12345;
 }
 var client_key=client;
 client=client+'_'+(new Date()).toISOString();
-
     var data=(results.data);
 	var speakers={};
 	var sessions={};
@@ -198,7 +197,7 @@ if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='')
 		tempobj['city']='';
 		tempobj['country']='';
 		tempobj['email']=String(data[i]['chair'+k+'_email']).toLowerCase();
-		tempobj['speakerid']=tempobj['email'];
+		tempobj['speakerid']=tempobj['email']+'_'+client_key;
 		tempobj['previous_email']=String(data[i]['previous_email_chair'+k]).toLowerCase();
 		data2.push({ ...tempobj })
 		console.log(tempobj)
