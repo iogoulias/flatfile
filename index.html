@@ -10,8 +10,8 @@ var client=document.getElementById('fname').value;
 if (client==null || client=='') {
 client=12345;
 }
-var event_key=((client).split("_").slice(-1)).join("");
-client=(((client).split("_")).slice(0,-1)).join("_");
+var event_key=((client).split('_').slice(-1)).join('');
+client=(((client).split('_')).slice(0,-1)).join('_');
 
 var client_key=client;
 client=client+'_'+(new Date()).toISOString();
@@ -170,8 +170,8 @@ if (client==null || client=='') {
 client=12345;
 }
 var client_key=client;
-var event_key=((client).split("_").slice(-1)).join("");
-client=(((client).split("_")).slice(0,-1)).join("_");
+var event_key=((client).split('_').slice(-1)).join('');
+client=(((client).split('_')).slice(0,-1)).join('_');
 client=client+'_'+(new Date()).toISOString();
     var data=(results.data);
 	var speakers={};
@@ -377,7 +377,6 @@ async function fetchAirtableEvents() {
     var baseId="appTwnTbrb7NXDfci";
     var table="Event%20Details";
     var maxRecords=100;
-    //var view="Open%20Orders"
     var offset=0;
     var cont=true;
     var events=[];
