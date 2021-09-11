@@ -364,12 +364,12 @@ async function airtable(payload,table) {
 <script >
 
 
-var airtable_events=await fetchAirtableEvents();
-console.log(airtable_events["dictionary"]);
-for (var key in airtable_events["dictionary"]) {
-document.getElementById('fname').options.add(new Option(key, key+"_"+airtable_events["dictionary"][key]))	
-document.getElementById('fname2').options.add(new Option(key, key+"_"+airtable_events["dictionary"][key]))
-}
+//var airtable_events=await fetchAirtableEvents();
+//console.log(airtable_events["dictionary"]);
+//for (var key in airtable_events["dictionary"]) {
+//document.getElementById('fname').options.add(new Option(key, key+"_"+airtable_events["dictionary"][key]))	
+//document.getElementById('fname2').options.add(new Option(key, key+"_"+airtable_events["dictionary"][key]))
+//}
 
 async function fetchAirtableEvents() {
 
