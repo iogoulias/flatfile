@@ -1,6 +1,9 @@
 <h2>If there's a different row for every presenter/chair, upload here:</h2>
   <label for="fname">Client:</label>
-  <input type="text" id="fname" name="fname"><br><br>
+ // <input type="text" id="fname" name="fname">
+ <select id="fname" name="fname">
+</select>
+  <br><br>
 <button onclick="importer.requestDataFromUser().then(async function(results) { 
 importer.displayLoader();
 var client=document.getElementById('fname').value;
@@ -152,7 +155,10 @@ async function airtable(payload,table) {
 })">Start Import</button>
 <h2>Otherwise upload here:</h2>
   <label for="fname2">Client:</label>
-  <input type="text" id="fname2" name="fname2"><br><br>
+ // <input type="text" id="fname2" name="fname2">
+  <select id="fname" name="fname">
+ </select>
+ <br><br>
 <button onclick="importer2.requestDataFromUser().then(async function(results) { 
 importer2.displayLoader();
 var client=document.getElementById('fname2').value;
@@ -349,7 +355,67 @@ async function airtable(payload,table) {
 })">Start Import</button>
 <script src="https://unpkg.com/@flatfile/adapter/build/dist/index.min.js"></script>
 
-<script>
+<script type="module">
+
+
+var airtable_events=await fetchAirtableEvents();
+for (var key in airtable_events["dictionary"]) {
+document.getElementById('fname').options.add(new Option(key, key+"_"+airtable_events["dictionary"][key]))	
+document.getElementById('fname2').options.add(new Option(key, key+"_"+airtable_events["dictionary"][key]))
+}
+
+async function fetchAirtableEvents() {
+
+    var APIkey="keyjBiRLhAGxVa5J9";
+    var baseId="appTwnTbrb7NXDfci";
+    var table="Event%20Details";
+    var maxRecords=100;
+    //var view="Open%20Orders"
+    var offset=0;
+    var cont=true;
+    var events=[];
+    while (cont) {
+    var wait=false;
+	var airtable=await customfetch("https://api.airtable.com/v0/"+baseId+"/"+table+"?maxRecords="+maxRecords+"&offset="+offset,{
+    "method": "GET",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer "+APIkey
+    }
+  })
+
+    if (airtable.hasOwnProperty("offset")) {
+    offset=airtable.offset;
+    wait=true;
+    } else {
+    cont=false;
+    }
+  airtable=airtable.records;
+  airtable=airtable.map(function(value){return [value.id,value.fields["Event Ref"]]})
+  var airtabledictionary={};
+      for (var i=0;i<airtable.length;i++) {
+           airtabledictionary[airtable[i][1]]=airtable[i][0];
+           }
+      airtable=airtable.map(function(value){return value[1]})
+  console.log(airtable.length)
+  if (wait) {
+  Utilities.sleep(250);
+  }
+  events=events.concat(airtable)
+    }
+  console.log(events)
+  //  "payload": JSON.stringify(payload)
+  
+  // /api/Order/GetOrderDetail
+  return {"events":events,"dictionary":airtabledictionary}
+}
+
+async function customfetch(url,options) {
+return await fetch(url,options).then(x=>x.json()).then(function(v){ return v})
+}
+
+ //console.log( await fetchAirtableEvents())
+
 const importer = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
   type: "imports",
   fields: [
