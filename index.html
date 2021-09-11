@@ -364,12 +364,12 @@ async function airtable(payload,table) {
 <script type="module" >
 
 
-//var airtable_events=await fetchAirtableEvents();
-//console.log(airtable_events["dictionary"]);
-//for (var key in airtable_events["dictionary"]) {
-//document.getElementById('fname').options.add(new Option(key, key+"_"+airtable_events["dictionary"][key]))	
-//document.getElementById('fname2').options.add(new Option(key, key+"_"+airtable_events["dictionary"][key]))
-//}
+var airtable_events=await fetchAirtableEvents();
+console.log(airtable_events["dictionary"]);
+for (var key in airtable_events["dictionary"]) {
+document.getElementById('fname').options.add(new Option(key, key+"_"+airtable_events["dictionary"][key]))	
+document.getElementById('fname2').options.add(new Option(key, key+"_"+airtable_events["dictionary"][key]))
+}
 
 async function fetchAirtableEvents() {
 
@@ -421,7 +421,8 @@ return await fetch(url,options).then(x=>x.json()).then(function(v){ return v})
 }
 
  //console.log( await fetchAirtableEvents())
-
+</script>
+<script>
 const importer = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
   type: "imports",
   fields: [
