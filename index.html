@@ -71,7 +71,7 @@ client=client+'_'+(new Date()).toISOString();
 	
 	}
 	
-	
+	if (data[i]['role']=='Speaker') {
 	if (!presentations.hasOwnProperty(data[i]['presentationid'])) {
 	presentations[data[i]['presentationid']]={'Presentation Id':data[i]['presentationid'],'Event ID':event_key,'ImportId':client,'Name':data[i]['presentationtitle'],'Start time':data[i]['presentationfrom'],'End time':data[i]['presentationto'],'Date':data[i]['sessiondate'],'Presentation type':data[i]['presentationtype']}
 	presentations[data[i]['presentationid']]['Sessions']=[data[i]['sessionid']];
@@ -79,6 +79,7 @@ client=client+'_'+(new Date()).toISOString();
 	} else {
 	(presentations[data[i]['presentationid']]['Speakers']).push(data[i]['speakerid']);
     (presentations[data[i]['presentationid']]['Sessions']).push(data[i]['sessionid']);	
+	}
 	}
 	
 	}
@@ -274,6 +275,7 @@ if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='')
 	
 	}
 	
+	if (data[i]['role']=='Speaker') {
 	if (!presentations.hasOwnProperty(data[i]['presentationid'])) {
 	presentations[data[i]['presentationid']]={'Presentation Id':data[i]['presentationid'],'Event ID':event_key,'ImportId':client,'Name':data[i]['presentationtitle'],'Start time':data[i]['presentationfrom'],'End time':data[i]['presentationto'],'Date':data[i]['sessiondate'],'Presentation type':data[i]['presentationtype']}
 	presentations[data[i]['presentationid']]['Sessions']=[data[i]['sessionid']];
@@ -281,6 +283,7 @@ if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='')
 	} else {
 	(presentations[data[i]['presentationid']]['Speakers']).push(data[i]['speakerid']);
     (presentations[data[i]['presentationid']]['Sessions']).push(data[i]['sessionid']);	
+	}
 	}
 	
 	}
