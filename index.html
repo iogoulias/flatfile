@@ -426,6 +426,7 @@ return await fetch(url,options).then(x=>x.json()).then(function(v){ return v})
  //console.log( await fetchAirtableEvents())
 </script>
 <script>
+//  validators:[{validate:'regex_matches',regex:"^(Chair)|(Speaker)$",error: 'Invalid Role Format or Empty Field'}]
 const importer = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
   type: "imports",
   fields: [
@@ -443,7 +444,14 @@ const importer = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
 	  {key: "sessionto", label: "Session End Time", validators:[{validate:'regex_matches',regex:"^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",error: 'Invalid Time Format or Empty Field'}]},
 	  {key: "sessiontype", label: "Session Type"},
 	  {key: "room", label: "Stage"},
-	  {key: "role", label: "Role (Speaker or Chair)", validators:[{validate:'regex_matches',regex:"^(Chair)|(Speaker)$",error: 'Invalid Role Format or Empty Field'}]},
+	  {key: "role", label: "Role (Speaker or Chair)", 
+	   type: "select",
+    options: [
+        { value: "Chair", label: "Chair",  alternates: ["chair", "co-chair","co-Chair","Co-chair","Co-chair"] },
+        { value: "Speaker", label: "Speaker", alternates: ["speaker", "co-speaker","co-Speaker","Co-Speaker","co-Speaker"] }
+    ]
+	  
+	},
 	  {key: "sessionid", label: "Session ID"},
 	  {key: "presentationtitle", label: "Presentation Title"},
 	  {key: "presentationid", label: "Presentation ID"},
@@ -519,29 +527,30 @@ importer.registerRecordHook(record => {
       ]  
   }
   }
-  if (record.role!=null && record.role!="") {
-  if (((record.role).toLowerCase()).indexOf("speaker")>-1) {
-  out.role = {
-      value: "Speaker",
-      info: [
-        {
-          message: 'Fixed Role Format',
-          level: 'info'
-        }
-      ]  
-  }  
-  } else {
-  out.role = {
-      value: "Chair",
-      info: [
-        {
-          message: 'Fixed Role Format',
-          level: 'info'
-        }
-      ]  
-  }   
-  }
-  } else {
+//  if (record.role!=null && record.role!="") {
+//  if (((record.role).toLowerCase()).indexOf("speaker")>-1) {
+//  out.role = {
+//      value: "Speaker",
+//      info: [
+//        {
+//          message: 'Fixed Role Format',
+//          level: 'info'
+//        }
+//      ]  
+//  }  
+//  } else {
+//  out.role = {
+//      value: "Chair",
+//      info: [
+//        {
+//          message: 'Fixed Role Format',
+//          level: 'info'
+//        }
+//      ]  
+//  }   
+//  }
+//  }
+  if (!(record.role!=null && record.role!="")) {
   out.role = {
       value: "Speaker",
       info: [
