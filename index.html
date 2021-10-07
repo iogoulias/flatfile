@@ -170,9 +170,10 @@ var client=document.getElementById('fname2').value;
 if (client==null || client=='') {
 client=12345;
 }
-var client_key=client;
+
 var event_key=((client).split('_').slice(-1)).join('');
 client=(((client).split('_')).slice(0,-1)).join('_');
+var client_key=client;
 client=client+'_'+(new Date()).toISOString();
     var data=(results.data);
 	var speakers={};
