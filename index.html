@@ -124,7 +124,7 @@ await airtable(payload2,'Speakers%20Import');
 await wait(200);
 await airtable(payload3,'Presentations%20Import')
 async function airtable(payload,table) {
-    var airtableresp = await fetch('https://api.airtable.com/v0/appTwnTbrb7NXDfci/'+table, {
+    var airtableresp = await fetch('https://api.airtable.com/v0/appPSTd2LHQfE0SE7/'+table, {
     'method': 'POST',
     'headers': {
       'Content-Type': 'application/json',
@@ -329,7 +329,7 @@ await airtable(payload2,'Speakers%20Import');
 await wait(200);
 await airtable(payload3,'Presentations%20Import');
 async function airtable(payload,table) {
-    var airtableresp = await fetch('https://api.airtable.com/v0/appTwnTbrb7NXDfci/'+table, {
+    var airtableresp = await fetch('https://api.airtable.com/v0/appPSTd2LHQfE0SE7/'+table, {
     'method': 'POST',
     'headers': {
       'Content-Type': 'application/json',
@@ -377,7 +377,7 @@ document.getElementById('fname2').options.add(new Option(key, key+"_"+airtable_e
 async function fetchAirtableEvents() {
 
     var APIkey="keyjBiRLhAGxVa5J9";
-    var baseId="appTwnTbrb7NXDfci";
+    var baseId="appPSTd2LHQfE0SE7";
     var table="Event%20Details";
     var maxRecords=100;
     var offset=0;
