@@ -417,7 +417,7 @@ async function fetchAirtableEvents() {
     cont=false;
     }
   airtable=airtable.records;
-  airtable=airtable.map(function(value){return [value.id,value.fields["Event Ref"]]})
+  airtable=airtable.map(function(value){return [value.id,value.fields["Event name"]]})
   var airtabledictionary={};
       for (var i=0;i<airtable.length;i++) {
            airtabledictionary[airtable[i][1]]=airtable[i][0];
