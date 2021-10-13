@@ -181,6 +181,7 @@ client=client+'_'+(new Date()).toISOString();
 	var sessions={};
 	var presentations={};
 	var addedchairs={};
+	var addedchairspresentations={};
 	data=data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']};if ((v['sessionid']).trim()!='') {v['sessionid']=v['sessionid']+'_'+client_key}; 
 	if(!v.hasOwnProperty('previous_email') || v['previous_email']==null){v['previous_email']=''};
 	if(!v.hasOwnProperty('previous_email_chair1') || v['previous_email_chair1']==null){v['previous_email_chair1']=''};
@@ -203,7 +204,11 @@ if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='')
 		    if ((data[i]['chair'+k+'_email']=='' || data[i]['chair'+k+'_email']==null) && (data[i]['chair'+k+'_lastname']!=null && data[i]['chair'+k+'_lastname']!='' ) ) {
 			data[i]['chair'+k+'_email']=data[i]['chair'+k+'_firstname']+' '+data[i]['chair'+k+'_lastname']
 			}
-			if ((!addedchairs.hasOwnProperty(data[i]['sessionid']) || (addedchairs.hasOwnProperty(data[i]['sessionid']) && !(addedchairs[data[i]['sessionid']]).hasOwnProperty(data[i]['chair'+k+'_email']) )) && data[i]['chair'+k+'_email']!='' && data[i]['chair'+k+'_email']!=null) {
+			if (
+			((!addedchairs.hasOwnProperty(data[i]['sessionid']) || (addedchairs.hasOwnProperty(data[i]['sessionid']) && !(addedchairs[data[i]['sessionid']]).hasOwnProperty(data[i]['chair'+k+'_email']) )) && data[i]['chair'+k+'_email']!='' && data[i]['chair'+k+'_email']!=null)
+			||
+			((!addedchairspresentations.hasOwnProperty(data[i]['presentationid']) || (addedchairspresentations.hasOwnProperty(data[i]['presentationid']) && !(addedchairspresentations[data[i]['presentationid']]).hasOwnProperty(data[i]['chair'+k+'_email']) )) && data[i]['chair'+k+'_email']!='' && data[i]['chair'+k+'_email']!=null)
+			) {
 		var tempobj={ ...data[i]};
 		tempobj['role']='Chair';
 		tempobj['firstname']=data[i]['chair'+k+'_firstname'];
@@ -230,6 +235,10 @@ if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='')
 		if (!addedchairs.hasOwnProperty(data[i]['sessionid'])) { 
 		addedchairs[data[i]['sessionid']]={};
 		}
+		if (!addedchairspresentations.hasOwnProperty(data[i]['presentationid'])) { 
+		addedchairspresentations[data[i]['presentationid']]={};
+		}
+		addedchairspresentations[data[i]['presentationid']][data[i]['chair'+k+'_email']]=1;
 		addedchairs[data[i]['sessionid']][data[i]['chair'+k+'_email']]=1;
 			}
 		}
