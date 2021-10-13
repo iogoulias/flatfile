@@ -71,7 +71,7 @@ client=client+'_'+(new Date()).toISOString();
 	
 	}
 	
-	if (data[i]['role']=='Speaker') {
+	//if (data[i]['role']=='Speaker') {
 	if (!presentations.hasOwnProperty(data[i]['presentationid'])) {
 	presentations[data[i]['presentationid']]={'Presentation Id':data[i]['presentationid'],'Event ID':event_key,'ImportId':client,'Name':data[i]['presentationtitle'],'Start time':data[i]['presentationfrom'],'End time':data[i]['presentationto'],'Date':data[i]['sessiondate'],'Presentation type':data[i]['presentationtype']}
 	presentations[data[i]['presentationid']]['Sessions']=[data[i]['sessionid']];
@@ -80,7 +80,7 @@ client=client+'_'+(new Date()).toISOString();
 	(presentations[data[i]['presentationid']]['Speakers']).push(data[i]['speakerid']);
     (presentations[data[i]['presentationid']]['Sessions']).push(data[i]['sessionid']);	
 	}
-	}
+	//}
 	
 	}
 	console.log(speakers);
@@ -208,11 +208,17 @@ if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='')
 		tempobj['firstname']=data[i]['chair'+k+'_firstname'];
 		tempobj['lastname']=data[i]['chair'+k+'_lastname'];
 		tempobj['presentertitle']='';
+		tempobj['presentationtitle']=data[i]['presentationtitle']
 		tempobj['city']='';
 		tempobj['country']='';
 		tempobj['email']=String(data[i]['chair'+k+'_email']).toLowerCase();
 		tempobj['speakerid']=tempobj['email']+'_'+client_key;
+		tempobj['presentationid']=data[i]['presentationid']+'_'+tempobj['email'];
 		tempobj['previous_email']=String(data[i]['previous_email_chair'+k]).toLowerCase();
+		tempobj['presentationfrom']=data[i]['presentationfrom'];
+		tempobj['presentationto']=data[i]['presentationto'];
+		tempobj['sessiondate']=data[i]['sessiondate'];
+		tempobj['presentationtype']=data[i]['presentationtype'];
 		data2.push({ ...tempobj })
 		console.log(tempobj)
 		console.log('k: '+k);
@@ -276,7 +282,7 @@ if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='')
 	
 	}
 	
-	if (data[i]['role']=='Speaker') {
+	//if (data[i]['role']=='Speaker') {
 	if (!presentations.hasOwnProperty(data[i]['presentationid'])) {
 	presentations[data[i]['presentationid']]={'Presentation Id':data[i]['presentationid'],'Event ID':event_key,'ImportId':client,'Name':data[i]['presentationtitle'],'Start time':data[i]['presentationfrom'],'End time':data[i]['presentationto'],'Date':data[i]['sessiondate'],'Presentation type':data[i]['presentationtype']}
 	presentations[data[i]['presentationid']]['Sessions']=[data[i]['sessionid']];
@@ -285,7 +291,7 @@ if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='')
 	(presentations[data[i]['presentationid']]['Speakers']).push(data[i]['speakerid']);
     (presentations[data[i]['presentationid']]['Sessions']).push(data[i]['sessionid']);	
 	}
-	}
+	//}
 	
 	}
 	console.log(speakers)
