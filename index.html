@@ -53,7 +53,7 @@ client=client+'_'+(new Date()).toISOString();
 	}
 	
 	if (!sessions.hasOwnProperty(data[i]['sessionid'])) {
-	sessions[data[i]['sessionid']]={'Session Id':data[i]['sessionid'],'Event ID':event_key,'ImportId':client,'Name':data[i]['sessiontitle'],'Start time':data[i]['sessionfrom'],'End time':data[i]['sessionto'],'Date':data[i]['sessiondate'],'Session type':data[i]['sessiontype'],'Stage':data[i]['room']}
+	sessions[data[i]['sessionid']]={'Session import ID':data[i]['sessionid'],'Event ID':event_key,'ImportId':client,'Name':data[i]['sessiontitle'],'Start time':data[i]['sessionfrom'],'End time':data[i]['sessionto'],'Date':data[i]['sessiondate'],'Session type':data[i]['sessiontype'],'Stage':data[i]['room']}
 	
 		if (data[i]['role']=='Speaker' || data[i]['role']=='co-Speaker') {
 		sessions[data[i]['sessionid']]['Speakers']=[data[i]['speakerid']];
@@ -273,7 +273,7 @@ if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='')
 	}
 	
 	if (!sessions.hasOwnProperty(data[i]['sessionid'])) {
-	sessions[data[i]['sessionid']]={'Session Id':data[i]['sessionid'],'Event ID':event_key,'ImportId':client,'Name':data[i]['sessiontitle'],'Start time':data[i]['sessionfrom'],'End time':data[i]['sessionto'],'Date':data[i]['sessiondate'],'Session type':data[i]['sessiontype'],'Stage':data[i]['room']}
+	sessions[data[i]['sessionid']]={'Session import ID':data[i]['sessionid'],'Event ID':event_key,'ImportId':client,'Name':data[i]['sessiontitle'],'Start time':data[i]['sessionfrom'],'End time':data[i]['sessionto'],'Date':data[i]['sessiondate'],'Session type':data[i]['sessiontype'],'Stage':data[i]['room']}
 	
 		if (data[i]['role']=='Speaker') {
 		sessions[data[i]['sessionid']]['Speakers']=[data[i]['speakerid']];
