@@ -561,8 +561,8 @@ const importer = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
 		{ value: "Cancelled", label: "Cancelled" }
     ]},
 	  {key: "emailcc", label: "Email CC", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
-	  {key: "telephone", label: "Telephone", validators:[{validate:'regex_matches',regex:"^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$", error:'Invalid Telephone Format'}]},
-	  {key: "telephone2", label: "Alternative Contact Number", validators:[{validate:'regex_matches',regex:"^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$", error:'Invalid Telephone Format'}]},
+	  {key: "telephone", label: "Telephone", validators:[{validate:'regex_matches',regex:"^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$", error:'Invalid Telephone Format'}]},
+	  {key: "telephone2", label: "Alternative Contact Number", validators:[{validate:'regex_matches',regex:"^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$", error:'Invalid Telephone Format'}]},
 	  {key: "gender", label: "Gender", type: "select",
     options: [
         { value: "Male", label: "Male"   },
@@ -803,8 +803,8 @@ const importer2 = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
 		{ value: "Cancelled", label: "Cancelled" }
     ]},
 	  {key: "emailcc", label: "Email CC", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
-	  {key: "telephone", label: "Telephone", validators:[{validate:'regex_matches',regex:"^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$", error:'Invalid Telephone Format'}]},
-	  {key: "telephone2", label: "Alternative Contact Number", validators:[{validate:'regex_matches',regex:"^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$", error:'Invalid Telephone Format'}]},
+	  {key: "telephone", label: "Telephone", validators:[{validate:'regex_matches',regex:"^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$", error:'Invalid Telephone Format'}]},
+	  {key: "telephone2", label: "Alternative Contact Number", validators:[{validate:'regex_matches',regex:"^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$", error:'Invalid Telephone Format'}]},
 	  {key: "gender", label: "Gender", type: "select",
     options: [
         { value: "Male", label: "Male"   },
