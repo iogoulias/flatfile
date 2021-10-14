@@ -21,18 +21,36 @@ client=client+'_'+(new Date()).toISOString();
 	var presentations={};
 	data=data.map(function(v){if(!v.hasOwnProperty('sessionid')){v['sessionid']=v['sessiontitle']};if ((v['sessionid']).trim()!='') {v['sessionid']=v['sessionid']+'_'+client_key};
 	if(!v.hasOwnProperty('previous_email') || v['previous_email']==null){v['previous_email']=''};
+    if(!v.hasOwnProperty('emailcc') || v['emailcc']==null){v['emailcc']=''};
+    if(!v.hasOwnProperty('telephone') || v['telephone']==null){v['telephone']=''};
+    if(!v.hasOwnProperty('telephone2') || v['telephone2']==null){v['telephone2']=''};
+    if(!v.hasOwnProperty('organisation') || v['organisation']==null){v['organisation']=''};
+    if(!v.hasOwnProperty('positionorganisation') || v['positionorganisation']==null){v['positionorganisation']=''};
+    if(!v.hasOwnProperty('username') || v['username']==null){v['username']=''};
+    if(!v.hasOwnProperty('password') || v['password']==null){v['password']=''};
+    if(!v.hasOwnProperty('url') || v['url']==null){v['url']=''};
+    if(!v.hasOwnProperty('pin') || v['pin']==null){v['pin']=''};
+    if(!v.hasOwnProperty('url2') || v['url2']==null){v['url2']=''};
+    if(!v.hasOwnProperty('remotecode') || v['remotecode']==null){v['remotecode']=''};
+    if(!v.hasOwnProperty('videodisplay2') || v['videodisplay2']==null){v['videodisplay2']=''};
+    if(!v.hasOwnProperty('eventfield1') || v['eventfield1']==null){v['eventfield1']=''};
+    if(!v.hasOwnProperty('eventfield2') || v['eventfield2']==null){v['eventfield2']=''};
+    if(!v.hasOwnProperty('eventfield3') || v['eventfield3']==null){v['eventfield3']=''};
 	if(!v.hasOwnProperty('presentationtitle') || v['presentationtitle']==null || v['presentationtitle']==''){v['presentationtitle']=v['sessiontitle']};
 	if(!v.hasOwnProperty('presentationfrom') || v['presentationfrom']==null || v['presentationfrom']==''){v['presentationfrom']=v['sessionfrom']};
 	if(!v.hasOwnProperty('presentationto') || v['presentationto']==null || v['presentationto']==''){v['presentationto']=v['sessionto']};
 	if(!v.hasOwnProperty('presentationid') || v['presentationid']==null || v['presentationid']==''){v['presentationid']=v['presentationtitle']+'_'+String(v['email']).toLowerCase()};if ((v['presentationid']).trim()!='') {v['presentationid']=v['presentationid']+'_'+client_key};
 	if(!v.hasOwnProperty('presentationtype') || v['presentationtype']==null || v['presentationtype']==''){v['presentationtype']=v['sessiontype']};
-	if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''}; v['email']=String(v['email']).toLowerCase(); if(!v.hasOwnProperty('email') || v['email']==null || v['email']=='' ){v['email']=(v['presentertitle']+' '+v['firstname']+' '+v['lastname']).trim()};
+	if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''}; v['email']=String(v['email']).toLowerCase(); if((!v.hasOwnProperty('email') || v['email']==null || v['email']=='') && (!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='') ){v['email']=(v['presentertitle']+' '+v['firstname']+' '+v['lastname']).trim()};
     if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']==''){v['speakerid']=v['email']};if ((v['speakerid']).trim()!='') {v['speakerid']=v['speakerid']+'_'+client_key};
 	return v})
 	for (var i=0;i<data.length;i++) {
 	if (!speakers.hasOwnProperty(data[i]['speakerid'])) {
 		console.log('previous_email: '+data[i]['previous_email'])
-	speakers[data[i]['speakerid']]={'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
+	speakers[data[i]['speakerid']]={
+		'Speaker attendance status':data[i]['speakerattendance'],'Gender':data[i]['gender'],'Email CC':data[i]['emailcc'],
+	'Telephone':data[i]['telephone'],'Alternative Contact Number':data[i]['telephone2'],'Organisation':data[i]['organisation'],'Position within organisation':data[i]['positionorganisation'],
+		'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
 	'ImportId':client,'Title':data[i]['presentertitle'],'Event ID':event_key,'Previous Email':data[i]['previous_email'],'Speaker import ID':data[i]['speakerid'],'First name':data[i]['firstname'],'Last name':data[i]['lastname'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
 	}
 	if (data[i]['role']=='Speaker' || data[i]['role']=='co-Speaker') {
@@ -74,7 +92,21 @@ client=client+'_'+(new Date()).toISOString();
 	
 	//if (data[i]['role']=='Speaker') {
 	if (!presentations.hasOwnProperty(data[i]['presentationid'])) {
-	presentations[data[i]['presentationid']]={'Role':data[i]['role'],'Presentation import ID':data[i]['presentationid'],'Event ID':event_key,'ImportId':client,'Name':data[i]['presentationtitle'],'Start time':data[i]['presentationfrom'],'End time':data[i]['presentationto'],'Date':data[i]['sessiondate'],'Presentation type':data[i]['presentationtype']}
+	presentations[data[i]['presentationid']]={
+		'Username (misc - presentation specific)':data[i]['username'],
+'Password (misc - presentation specific)':data[i]['password'],
+'Video Platform URL (presentation specific)':data[i]['url'],
+'Video platform password/PIN (presentation specific)':data[i]['pin'],
+'Moderation tool URL (presentation specific)':data[i]['url2'],
+'Remote clicker tool code (presentation specific)':data[i]['remotecode'],
+'Video display name (presentation specific)':data[i]['videodisplay2'],
+'Event specific presentation field 1':data[i]['eventfield1'],
+'Event specific presentation field 2':data[i]['eventfield2'],
+'Event specific presentation field 3':data[i]['eventfield3'],
+'Pre-record vs speaking in person':data[i]['prerecordorlive'],
+'Physical speaker status':data[i]['physicalspeakerstatus'],
+'Presentation language':data[i]['language'],
+		'Role':data[i]['role'],'Presentation import ID':data[i]['presentationid'],'Event ID':event_key,'ImportId':client,'Name':data[i]['presentationtitle'],'Start time':data[i]['presentationfrom'],'End time':data[i]['presentationto'],'Date':data[i]['sessiondate'],'Presentation type':data[i]['presentationtype']}
 	presentations[data[i]['presentationid']]['Sessions']=[data[i]['sessionid']];
     presentations[data[i]['presentationid']]['Speakers']=[data[i]['speakerid']];	
 	} else {
@@ -189,12 +221,27 @@ client=client+'_'+(new Date()).toISOString();
 	if(!v.hasOwnProperty('previous_email_chair3') || v['previous_email_chair3']==null){v['previous_email_chair3']=''};
 	if(!v.hasOwnProperty('previous_email_chair4') || v['previous_email_chair4']==null){v['previous_email_chair4']=''};
 	if(!v.hasOwnProperty('previous_email_chair5') || v['previous_email_chair5']==null){v['previous_email_chair5']=''};
+    if(!v.hasOwnProperty('emailcc') || v['emailcc']==null){v['emailcc']=''};
+    if(!v.hasOwnProperty('telephone') || v['telephone']==null){v['telephone']=''};
+    if(!v.hasOwnProperty('telephone2') || v['telephone2']==null){v['telephone2']=''};
+    if(!v.hasOwnProperty('organisation') || v['organisation']==null){v['organisation']=''};
+    if(!v.hasOwnProperty('positionorganisation') || v['positionorganisation']==null){v['positionorganisation']=''};
+    if(!v.hasOwnProperty('username') || v['username']==null){v['username']=''};
+    if(!v.hasOwnProperty('password') || v['password']==null){v['password']=''};
+    if(!v.hasOwnProperty('url') || v['url']==null){v['url']=''};
+    if(!v.hasOwnProperty('pin') || v['pin']==null){v['pin']=''};
+    if(!v.hasOwnProperty('url2') || v['url2']==null){v['url2']=''};
+    if(!v.hasOwnProperty('remotecode') || v['remotecode']==null){v['remotecode']=''};
+    if(!v.hasOwnProperty('videodisplay2') || v['videodisplay2']==null){v['videodisplay2']=''};
+    if(!v.hasOwnProperty('eventfield1') || v['eventfield1']==null){v['eventfield1']=''};
+    if(!v.hasOwnProperty('eventfield2') || v['eventfield2']==null){v['eventfield2']=''};
+    if(!v.hasOwnProperty('eventfield3') || v['eventfield3']==null){v['eventfield3']=''};
 	if(!v.hasOwnProperty('presentationtitle') || v['presentationtitle']==null || v['presentationtitle']==''){v['presentationtitle']=v['sessiontitle']};
 	if(!v.hasOwnProperty('presentationfrom') || v['presentationfrom']==null || v['presentationfrom']==''){v['presentationfrom']=v['sessionfrom']};
 	if(!v.hasOwnProperty('presentationto') || v['presentationto']==null || v['presentationto']==''){v['presentationto']=v['sessionto']};
 	if(!v.hasOwnProperty('presentationid') || v['presentationid']==null || v['presentationid']==''){v['presentationid']=v['presentationtitle']+'_'+String(v['email']).toLowerCase()};if ((v['presentationid']).trim()!='') {v['presentationid']=v['presentationid']+'_'+client_key};
 	if(!v.hasOwnProperty('presentationtype') || v['presentationtype']==null || v['presentationtype']==''){v['presentationtype']=v['sessiontype']};
-	if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''};v['email']=String(v['email']).toLowerCase(); if(!v.hasOwnProperty('email') || v['email']==null || v['email']=='' ){v['email']=(v['presentertitle']+' '+v['firstname']+' '+v['lastname']).trim()};v['role']='Speaker';
+	if(!v.hasOwnProperty('presentertitle') || v['presentertitle']==null ){v['presentertitle']=''};v['email']=String(v['email']).toLowerCase(); if((!v.hasOwnProperty('email') || v['email']==null || v['email']=='') && (!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='') ){v['email']=(v['presentertitle']+' '+v['firstname']+' '+v['lastname']).trim()};v['role']='Speaker';
 if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']==''){v['speakerid']=v['email']};if ((v['speakerid']).trim()!='') {v['speakerid']=v['speakerid']+'_'+client_key};
 	return v})
 	var data2=[];
@@ -225,6 +272,27 @@ if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='')
 		tempobj['presentationto']=data[i]['presentationto'];
 		tempobj['sessiondate']=data[i]['sessiondate'];
 		tempobj['presentationtype']=data[i]['presentationtype'];
+		tempobj['speakerattendance']="Confirmed";
+        tempobj['gender']="";
+        tempobj['emailcc']="";
+        tempobj['telephone']="";
+        tempobj['telephone2']="";
+        tempobj['organisation']="";
+        tempobj['positionorganisation']="";
+        tempobj['username']=data[i]['username'];
+        tempobj['password']=data[i]['password'];
+        tempobj['url']=data[i]['url'];
+        tempobj['pin']=data[i]['pin'];
+        tempobj['url2']=data[i]['url2'];
+        tempobj['remotecode']=data[i]['remotecode'];
+        tempobj['videodisplay2']=data[i]['videodisplay2'];
+        tempobj['eventfield1']=data[i]['eventfield1'];
+        tempobj['eventfield2']=data[i]['eventfield2'];
+        tempobj['eventfield3']=data[i]['eventfield3'];
+        tempobj['prerecordorlive']=data[i]['prerecordorlive'];
+        tempobj['physicalspeakerstatus']=data[i]['physicalspeakerstatus'];
+        tempobj['language']=data[i]['language'];
+
 		data2.push({ ...tempobj })
 		console.log(tempobj)
 		console.log('k: '+k);
@@ -244,7 +312,26 @@ if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='')
 		}
 	}
 	data=data.concat(data2);
-	var includekeys={'speakerid':1,'previous_email':1,'presentationid':1,'presentationtitle':1,'presentationfrom':1,'presentationto':1,'presentationtype':1,'presentertitle':1,'firstname':1,'lastname':1,'email':1,'city':1,'country':1,'sessiontitle':1,'sessiondate':1,'sessionfrom':1,'sessionto':1,'sessiontype':1,'room':1,'role':1,'sessionid':1}
+	var includekeys={'speakerattendance':1,
+'gender':1,
+'emailcc':1,
+'telephone':1,
+'telephone2':1,
+'organisation':1,
+'positionorganisation':1,
+'username':1,
+'password':1,
+'url':1,
+'pin':1,
+'url2':1,
+'remotecode':1,
+'videodisplay2':1,
+'eventfield1':1,
+'eventfield2':1,
+'eventfield3':1,
+'prerecordorlive':1,
+'physicalspeakerstatus':1,
+'language':1,'speakerid':1,'previous_email':1,'presentationid':1,'presentationtitle':1,'presentationfrom':1,'presentationto':1,'presentationtype':1,'presentertitle':1,'firstname':1,'lastname':1,'email':1,'city':1,'country':1,'sessiontitle':1,'sessiondate':1,'sessionfrom':1,'sessionto':1,'sessiontype':1,'room':1,'role':1,'sessionid':1}
     data=data.map(function(v){
 		var newv={};
 		for (var key in v) { if (includekeys.hasOwnProperty(key)) { newv[key]=v[key]}}
@@ -252,7 +339,9 @@ if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='')
 	})
     for (var i=0;i<data.length;i++) {
 	if (!speakers.hasOwnProperty(data[i]['speakerid'])) {
-	speakers[data[i]['speakerid']]={'Title':data[i]['presentertitle'],'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
+	speakers[data[i]['speakerid']]={'Speaker attendance status':data[i]['speakerattendance'],'Gender':data[i]['gender'],'Email CC':data[i]['emailcc'],
+	'Telephone':data[i]['telephone'],'Alternative Contact Number':data[i]['telephone2'],'Organisation':data[i]['organisation'],'Position within organisation':data[i]['positionorganisation'],
+	'Title':data[i]['presentertitle'],'Name':(data[i]['presentertitle']+' '+data[i]['firstname']+' '+data[i]['lastname']).trim(),
 	'ImportId':client,'First name':data[i]['firstname'],'Event ID':event_key,'Last name':data[i]['lastname'],'Speaker import ID':data[i]['speakerid'],'Previous Email':data[i]['previous_email'],'Email':data[i]['email'],'City':data[i]['city'],'Country':data[i]['country']
 	}
 	
@@ -294,7 +383,21 @@ if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='')
 	
 	//if (data[i]['role']=='Speaker') {
 	if (!presentations.hasOwnProperty(data[i]['presentationid'])) {
-	presentations[data[i]['presentationid']]={'Role':data[i]['role'],'Presentation import ID':data[i]['presentationid'],'Event ID':event_key,'ImportId':client,'Name':data[i]['presentationtitle'],'Start time':data[i]['presentationfrom'],'End time':data[i]['presentationto'],'Date':data[i]['sessiondate'],'Presentation type':data[i]['presentationtype']}
+	presentations[data[i]['presentationid']]={
+		'Username (misc - presentation specific)':data[i]['username'],
+'Password (misc - presentation specific)':data[i]['password'],
+'Video Platform URL (presentation specific)':data[i]['url'],
+'Video platform password/PIN (presentation specific)':data[i]['pin'],
+'Moderation tool URL (presentation specific)':data[i]['url2'],
+'Remote clicker tool code (presentation specific)':data[i]['remotecode'],
+'Video display name (presentation specific)':data[i]['videodisplay2'],
+'Event specific presentation field 1':data[i]['eventfield1'],
+'Event specific presentation field 2':data[i]['eventfield2'],
+'Event specific presentation field 3':data[i]['eventfield3'],
+'Pre-record vs speaking in person':data[i]['prerecordorlive'],
+'Physical speaker status':data[i]['physicalspeakerstatus'],
+'Presentation language':data[i]['language'],
+		'Role':data[i]['role'],'Presentation import ID':data[i]['presentationid'],'Event ID':event_key,'ImportId':client,'Name':data[i]['presentationtitle'],'Start time':data[i]['presentationfrom'],'End time':data[i]['presentationto'],'Date':data[i]['sessiondate'],'Presentation type':data[i]['presentationtype']}
 	presentations[data[i]['presentationid']]['Sessions']=[data[i]['sessionid']];
     presentations[data[i]['presentationid']]['Speakers']=[data[i]['speakerid']];	
 	} else {
@@ -451,6 +554,50 @@ const importer = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
 	  {key: "lastname", label: "Speaker Last Name"},
 	  {key: "presentertitle", label: "Speaker Title"},
 	  {key: "speakerid", label: "Speaker ID"},
+	  {key: "speakerattendance", label: "Speaker attendance status", type: "select",
+    options: [
+        { value: "Pencilled", label: "Pencilled"   },
+        { value: "Confirmed", label: "Confirmed" },
+		{ value: "Cancelled", label: "Cancelled" }
+    ]},
+	  {key: "emailcc", label: "Email CC", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
+	  {key: "telephone", label: "Telephone", validators:[{validate:'regex_matches',regex:"^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$", error:'Invalid Telephone Format'}]},
+	  {key: "telephone2", label: "Alternative Contact Number", validators:[{validate:'regex_matches',regex:"^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$", error:'Invalid Telephone Format'}]},
+	  {key: "gender", label: "Gender", type: "select",
+    options: [
+        { value: "Male", label: "Male"   },
+        { value: "Female", label: "Female" }
+    ]},
+	  {key: "organisation", label: "Organisation"},
+	  {key: "positionorganisation", label: "Position within organisation"},
+	  {key: "language", label: "Presentation language", type: "select",
+    options: [
+        { value: "English", label: "English"   },
+        { value: "French", label: "French" },
+	    { value: "Spanish", label: "Spanish" },
+		{ value: "German", label: "German" },
+		{ value: "Chinese", label: "Chinese" }
+    ]},
+      {key: "username", label: "Username (misc - presentation specific)"},
+      {key: "password", label: "Password (misc - presentation specific)"},
+      {key: "url", label: "Video Platform URL (presentation specific)", validators:[{validate:"regex_matches",regex:"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"}]},
+	  {key: "pin", label: "Video platform password/PIN (presentation specific)"},
+      {key: "url2", label: "Moderation tool URL (presentation specific)", validators:[{validate:"regex_matches",regex:"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"}]},
+	  {key: "remotecode", label: "Remote clicker tool code (presentation specific)"},
+	  {key: "videodisplay2", label: "Video display name (presentation specific)"},
+	  {key: "prerecordorlive", label: "Pre-record vs speaking in person", type: "select",
+    options: [
+        { value: "Pre-record", label: "Pre-record"   },
+        { value: "In-person", label: "In-person" }
+    ]},
+	  {key: "physicalspeakerstatus", label: "Physical speaker status", type: "select",
+    options: [
+        { value: "Remote", label: "Remote"   },
+        { value: "On-site", label: "On-site" }
+    ]},
+      {key: "eventfield1", label: "Event specific presentation field 1"},
+      {key: "eventfield2", label: "Event specific presentation field 2"},
+      {key: "eventfield3", label: "Event specific presentation field 3"},
 	  {key: "email", label: "Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "previous_email", label: "Previous Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "city", label: "City"},
@@ -580,6 +727,65 @@ importer.registerRecordHook(record => {
   }    
   }
   
+  if (!(record.speakerattendance!=null && record.speakerattendance!="")) {
+  out.speakerattendance = {
+      value: "Confirmed",
+      info: [
+        {
+          message: 'Fixed Speaker Attendance Status Format',
+          level: 'info'
+        }
+      ]  
+  }    
+  }
+
+  if (!(record.gender!=null && record.gender!="")) {
+  out.gender = {
+      value: "Male",
+      info: [
+        {
+          message: 'Fixed Gender Format',
+          level: 'info'
+        }
+      ]  
+  }    
+  }
+  
+  if (!(record.language!=null && record.language!="")) {
+  out.language = {
+      value: "English",
+      info: [
+        {
+          message: 'Fixed Language Format',
+          level: 'info'
+        }
+      ]  
+  }    
+  }
+  
+  if (!(record.prerecordorlive!=null && record.prerecordorlive!="")) {
+  out.prerecordorlive = {
+      value: "In-person",
+      info: [
+        {
+          message: 'Fixed Pre-record vs speaking in person Format',
+          level: 'info'
+        }
+      ]  
+  }    
+  }
+  
+  if (!(record.physicalspeakerstatus!=null && record.physicalspeakerstatus!="")) {
+  out.physicalspeakerstatus = {
+      value: "On-site",
+      info: [
+        {
+          message: 'Fixed Physical Speaker Status Format',
+          level: 'info'
+        }
+      ]  
+  }    
+  }
   return out
 })
 
@@ -590,6 +796,50 @@ const importer2 = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
 	  {key: "lastname", label: "Speaker Last Name"},
 	  {key: "presentertitle", label: "Speaker Title"},
 	  {key: "speakerid", label: "Speaker ID"},
+	  {key: "speakerattendance", label: "Speaker attendance status", type: "select",
+    options: [
+        { value: "Pencilled", label: "Pencilled"   },
+        { value: "Confirmed", label: "Confirmed" },
+		{ value: "Cancelled", label: "Cancelled" }
+    ]},
+	  {key: "emailcc", label: "Email CC", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
+	  {key: "telephone", label: "Telephone", validators:[{validate:'regex_matches',regex:"^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$", error:'Invalid Telephone Format'}]},
+	  {key: "telephone2", label: "Alternative Contact Number", validators:[{validate:'regex_matches',regex:"^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$", error:'Invalid Telephone Format'}]},
+	  {key: "gender", label: "Gender", type: "select",
+    options: [
+        { value: "Male", label: "Male"   },
+        { value: "Female", label: "Female" }
+    ]},
+	  {key: "organisation", label: "Organisation"},
+	  {key: "positionorganisation", label: "Position within organisation"},
+	  {key: "language", label: "Presentation language", type: "select",
+    options: [
+        { value: "English", label: "English"   },
+        { value: "French", label: "French" },
+	    { value: "Spanish", label: "Spanish" },
+		{ value: "German", label: "German" },
+		{ value: "Chinese", label: "Chinese" }
+    ]},
+      {key: "username", label: "Username (misc - presentation specific)"},
+      {key: "password", label: "Password (misc - presentation specific)"},
+      {key: "url", label: "Video Platform URL (presentation specific)", validators:[{validate:"regex_matches",regex:"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"}]},
+	  {key: "pin", label: "Video platform password/PIN (presentation specific)"},
+      {key: "url2", label: "Moderation tool URL (presentation specific)", validators:[{validate:"regex_matches",regex:"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"}]},
+	  {key: "remotecode", label: "Remote clicker tool code (presentation specific)"},
+	  {key: "videodisplay2", label: "Video display name (presentation specific)"},
+	  {key: "prerecordorlive", label: "Pre-record vs speaking in person", type: "select",
+    options: [
+        { value: "Pre-record", label: "Pre-record"   },
+        { value: "In-person", label: "In-person" }
+    ]},
+	  {key: "physicalspeakerstatus", label: "Physical speaker status", type: "select",
+    options: [
+        { value: "Remote", label: "Remote"   },
+        { value: "On-site", label: "On-site" }
+    ]},
+      {key: "eventfield1", label: "Event specific presentation field 1"},
+      {key: "eventfield2", label: "Event specific presentation field 2"},
+      {key: "eventfield3", label: "Event specific presentation field 3"},
 	  {key: "email", label: "Speaker Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "previous_email", label: "Speaker Previous Email", validators:[{validate:'regex_matches',regex:"^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",error: 'Invalid Email Format or Empty Field'}]},
 	  {key: "city", label: "Speaker City"},
@@ -692,6 +942,66 @@ importer2.registerRecordHook(record => {
         }
       ]  
   }
+  }
+  
+  if (!(record.speakerattendance!=null && record.speakerattendance!="")) {
+  out.speakerattendance = {
+      value: "Confirmed",
+      info: [
+        {
+          message: 'Fixed Speaker Attendance Status Format',
+          level: 'info'
+        }
+      ]  
+  }    
+  }
+
+  if (!(record.gender!=null && record.gender!="")) {
+  out.gender = {
+      value: "Male",
+      info: [
+        {
+          message: 'Fixed Gender Format',
+          level: 'info'
+        }
+      ]  
+  }    
+  }
+  
+  if (!(record.language!=null && record.language!="")) {
+  out.language = {
+      value: "English",
+      info: [
+        {
+          message: 'Fixed Language Format',
+          level: 'info'
+        }
+      ]  
+  }    
+  }
+  
+  if (!(record.prerecordorlive!=null && record.prerecordorlive!="")) {
+  out.prerecordorlive = {
+      value: "In-person",
+      info: [
+        {
+          message: 'Fixed Pre-record vs speaking in person Format',
+          level: 'info'
+        }
+      ]  
+  }    
+  }
+  
+  if (!(record.physicalspeakerstatus!=null && record.physicalspeakerstatus!="")) {
+  out.physicalspeakerstatus = {
+      value: "On-site",
+      info: [
+        {
+          message: 'Fixed Physical Speaker Status Format',
+          level: 'info'
+        }
+      ]  
+  }    
   }
   
   return out
