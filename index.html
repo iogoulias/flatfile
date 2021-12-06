@@ -103,7 +103,7 @@ client=client+'_'+(new Date()).toISOString();
 'Event specific presentation field 1':data[i]['eventfield1'],
 'Event specific presentation field 2':data[i]['eventfield2'],
 'Event specific presentation field 3':data[i]['eventfield3'],
-'Pre-record vs speaking in person':data[i]['prerecordorlive'],
+'Pre-record vs live':data[i]['prerecordorlive'],
 'Physical speaker status':data[i]['physicalspeakerstatus'],
 'Presentation language':data[i]['language'],
 		'Role':data[i]['role'],'Presentation import ID':data[i]['presentationid'],'Event ID':event_key,'ImportId':client,'Name':data[i]['presentationtitle'],'Start time':data[i]['presentationfrom'],'End time':data[i]['presentationto'],'Date':data[i]['sessiondate'],'Presentation type':data[i]['presentationtype']}
@@ -394,7 +394,7 @@ if(!v.hasOwnProperty('speakerid') || v['speakerid']==null || v['speakerid']=='')
 'Event specific presentation field 1':data[i]['eventfield1'],
 'Event specific presentation field 2':data[i]['eventfield2'],
 'Event specific presentation field 3':data[i]['eventfield3'],
-'Pre-record vs speaking in person':data[i]['prerecordorlive'],
+'Pre-record vs live':data[i]['prerecordorlive'],
 'Physical speaker status':data[i]['physicalspeakerstatus'],
 'Presentation language':data[i]['language'],
 		'Role':data[i]['role'],'Presentation import ID':data[i]['presentationid'],'Event ID':event_key,'ImportId':client,'Name':data[i]['presentationtitle'],'Start time':data[i]['presentationfrom'],'End time':data[i]['presentationto'],'Date':data[i]['sessiondate'],'Presentation type':data[i]['presentationtype']}
@@ -585,10 +585,10 @@ const importer = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
       {key: "url2", label: "Moderation tool URL (presentation specific)", validators:[{validate:"regex_matches",regex:"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"}]},
 	  {key: "remotecode", label: "Remote clicker tool code (presentation specific)"},
 	  {key: "videodisplay2", label: "Video display name (presentation specific)"},
-	  {key: "prerecordorlive", label: "Pre-record vs speaking in person", type: "select",
+	  {key: "prerecordorlive", label: "Pre-record vs live", type: "select",
     options: [
         { value: "Pre-record", label: "Pre-record"   },
-        { value: "In-person", label: "In-person" }
+        { value: "Live", label: "Live" }
     ]},
 	  {key: "physicalspeakerstatus", label: "Physical speaker status", type: "select",
     options: [
@@ -827,10 +827,10 @@ const importer2 = new FlatfileImporter("bd4ed93e-83cb-4d62-a5b7-4a18ebdb9ce2", {
       {key: "url2", label: "Moderation tool URL (presentation specific)", validators:[{validate:"regex_matches",regex:"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"}]},
 	  {key: "remotecode", label: "Remote clicker tool code (presentation specific)"},
 	  {key: "videodisplay2", label: "Video display name (presentation specific)"},
-	  {key: "prerecordorlive", label: "Pre-record vs speaking in person", type: "select",
+	  {key: "prerecordorlive", label: "Pre-record vs live", type: "select",
     options: [
         { value: "Pre-record", label: "Pre-record"   },
-        { value: "In-person", label: "In-person" }
+        { value: "Live", label: "Live" }
     ]},
 	  {key: "physicalspeakerstatus", label: "Physical speaker status", type: "select",
     options: [
